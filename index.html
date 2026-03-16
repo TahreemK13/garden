@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tahreem's Garden</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=Lora:ital,wght@0,300;0,400;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #f4ede0;
+      --cream-dark: #ecddd0;
+      --cream-deeper: #e0cdb8;
+      --ink: #2c2416;
+      --ink-mid: #5a4a38;
+      --ink-light: #8a7a6a;
+      --ink-faint: #b8a898;
+      --green: #3d6b4f;
+      --green-mid: #5a8c6e;
+      --green-light: #8ab89a;
+      --green-faint: #c8ddd0;
+      --green-wash: #e8f0eb;
+      --rust: #b85c38;
+      --gold: #c8943a;
+      --rule: #d8cabb;
+      --white: #fdfaf6;
+    }
+
+    html { font-size: 16px; scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: 'Lora', serif;
+      font-weight: 300;
+      line-height: 1.7;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* ── WATERCOLOR TEXTURE BACKGROUND ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: 
+        radial-gradient(ellipse 800px 600px at 10% 20%, rgba(90,140,110,0.07) 0%, transparent 70%),
+        radial-gradient(ellipse 600px 800px at 90% 70%, rgba(200,148,58,0.05) 0%, transparent 70%),
+        radial-gradient(ellipse 500px 400px at 50% 90%, rgba(90,140,110,0.06) 0%, transparent 70%),
+        radial-gradient(ellipse 300px 300px at 80% 10%, rgba(184,92,56,0.04) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Subtle paper grain */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(244,237,224,0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--rule);
+      padding: 1rem 0;
+    }
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .nav-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-style: italic;
+      color: var(--green);
+      text-decoration: none;
+      letter-spacing: 0.01em;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--ink-light);
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.15s;
+    }
+    .nav-links a:hover { color: var(--green); }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 6rem 2.5rem 4rem;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .hero-left h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 4.5rem;
+      font-weight: 400;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin-bottom: 1.5rem;
+    }
+    .hero-left h1 em {
+      font-style: italic;
+      color: var(--green);
+    }
+    .hero-left h1 .small {
+      display: block;
+      font-size: 1.8rem;
+      font-weight: 300;
+      color: var(--ink-mid);
+      letter-spacing: 0.01em;
+      margin-top: 0.3rem;
+    }
+
+    .hero-tagline {
+      font-size: 1rem;
+      color: var(--ink-mid);
+      line-height: 1.8;
+      max-width: 420px;
+      margin-bottom: 2rem;
+      font-style: italic;
+    }
+
+    .hero-meta {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--ink-faint);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+
+    .hero-links {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .hero-link {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--green);
+      text-decoration: none;
+      border: 1px solid var(--green-light);
+      padding: 0.4rem 0.9rem;
+      border-radius: 1px;
+      transition: all 0.15s;
+    }
+    .hero-link:hover {
+      background: var(--green);
+      color: var(--white);
+      border-color: var(--green);
+    }
+
+    /* ── BOTANICAL SVG ── */
+    .hero-right {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    .botanical {
+      width: 100%;
+      max-width: 380px;
+      opacity: 0.85;
+    }
+
+    /* ── SECTION DIVIDER ── */
+    .divider {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--rule);
+    }
+    .divider-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      white-space: nowrap;
+    }
+
+    /* ── GARDEN ZONES ── */
+    .garden {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2.5rem 6rem;
+    }
+
+    .zone {
+      margin-bottom: 5rem;
+    }
+
+    .zone-header {
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--rule);
+    }
+    .zone-emoji {
+      font-size: 1.2rem;
+    }
+    .zone-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--ink);
+    }
+    .zone-title em {
+      font-style: italic;
+      color: var(--green-mid);
+    }
+    .zone-desc {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.06em;
+      color: var(--ink-faint);
+      text-transform: uppercase;
+      margin-left: auto;
+    }
+
+    /* ── SCATTERED DESK LAYOUT ── */
+    .scatter-field {
+      position: relative;
+      width: 100%;
+      min-height: 520px;
+      margin-bottom: 2rem;
+    }
+
+    /* Each item is absolutely positioned with baked-in offsets via CSS vars */
+    .scatter-item {
+      position: absolute;
+      transform: rotate(var(--r, 0deg)) translate(var(--tx, 0px), var(--ty, 0px));
+      transform-origin: center center;
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s;
+      z-index: var(--z, 1);
+      cursor: pointer;
+    }
+    .scatter-item:hover {
+      transform: rotate(0deg) translate(var(--tx, 0px), var(--ty, 0px)) translateY(-6px) scale(1.02);
+      z-index: 50 !important;
+      box-shadow: 0 20px 50px rgba(44,36,22,0.14);
+    }
+
+    /* ── CARDS ── */
+    .card {
+      background: var(--white);
+      border: 1px solid var(--rule);
+      padding: 1.4rem;
+      width: var(--w, 280px);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 2px 4px 16px rgba(44,36,22,0.07);
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--green-faint);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.25s ease;
+    }
+    .scatter-item:hover .card::before { transform: scaleX(1); }
+
+    /* Growth stage badge */
+    .growth {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .growth-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--green-faint);
+    }
+    .growth-dot.sprout { background: var(--green-light); }
+    .growth-dot.bloom { background: var(--green); }
+
+    .card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.35;
+      color: var(--ink);
+      margin-bottom: 0.5rem;
+    }
+    .card-title em { font-style: italic; color: var(--green-mid); }
+
+    .card-body {
+      font-size: 0.82rem;
+      color: var(--ink-mid);
+      line-height: 1.7;
+      margin-bottom: 1rem;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--cream-dark);
+    }
+    .card-date {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      color: var(--ink-faint);
+      letter-spacing: 0.04em;
+    }
+    .card-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      background: var(--green-wash);
+      color: var(--green);
+      padding: 0.15rem 0.5rem;
+      border-radius: 1px;
+    }
+    .card-tag.rust { background: #f5ede8; color: var(--rust); }
+    .card-tag.gold { background: #f5f0e0; color: var(--gold); }
+
+    /* ── PIN CARDS ── */
+    .pin-card {
+      background: var(--white);
+      border: 1px solid var(--rule);
+      padding: 1.2rem;
+      width: var(--w, 240px);
+      position: relative;
+      box-shadow: 2px 4px 14px rgba(44,36,22,0.07);
+    }
+
+    .pin-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--rust);
+      position: absolute;
+      top: -5px;
+      left: 50%;
+      transform: translateX(-50%);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    .pin-dot.green { background: var(--green); }
+    .pin-dot.gold { background: var(--gold); }
+
+    .pin-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.9rem;
+      font-style: italic;
+      color: var(--ink);
+      margin-bottom: 0.4rem;
+      margin-top: 0.3rem;
+    }
+    .pin-body {
+      font-size: 0.78rem;
+      color: var(--ink-mid);
+      line-height: 1.6;
+    }
+    .pin-link {
+      display: inline-block;
+      margin-top: 0.6rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--green);
+      text-decoration: none;
+      border-bottom: 1px solid var(--green-faint);
+    }
+    .pin-link:hover { border-color: var(--green); }
+
+    /* ── ART FRAMES ── */
+    .art-frame {
+      background: var(--white);
+      border: 1px solid var(--rule);
+      padding: 0.8rem;
+      width: var(--w, 200px);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 2px 4px 14px rgba(44,36,22,0.08);
+    }
+    .art-placeholder {
+      width: 100%;
+      height: 160px;
+      background: linear-gradient(135deg, var(--green-wash) 0%, var(--cream-dark) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      color: var(--ink-faint);
+      letter-spacing: 0.06em;
+      margin-bottom: 0.6rem;
+    }
+    .art-caption {
+      font-family: 'Lora', serif;
+      font-size: 0.7rem;
+      font-style: italic;
+      color: var(--ink-light);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid var(--rule);
+      padding: 2.5rem 2.5rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    footer p {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--ink-faint);
+      letter-spacing: 0.04em;
+    }
+    footer a { color: var(--green); text-decoration: none; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero { animation: fadeUp 0.6s ease both; }
+    .zone { animation: fadeUp 0.5s ease both; }
+    .zone:nth-child(1) { animation-delay: 0.1s; }
+    .zone:nth-child(2) { animation-delay: 0.2s; }
+    .zone:nth-child(3) { animation-delay: 0.3s; }
+    .zone:nth-child(4) { animation-delay: 0.4s; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; gap: 2rem; }
+      .hero-right { display: none; }
+      .scatter-field { min-height: auto; position: static; }
+      .scatter-item { position: static !important; transform: none !important; margin-bottom: 1rem; }
+      .card, .pin-card, .art-frame { width: 100% !important; }
+    }
+    @media (max-width: 600px) {
+      .hero { padding: 3rem 1.25rem 2rem; }
+      .hero-left h1 { font-size: 3rem; }
+      .garden { padding: 0 1.25rem 4rem; }
+      nav .nav-inner { padding: 0 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-name" href="#">Tahreem's Garden</a>
+    <ul class="nav-links">
+      <li><a href="https://www.tahreemkarim.xyz/science">Science</a></li>
+      <li><a href="https://portfolio.tahreemkarim.xyz">Portfolio</a></li>
+      <li><a href="https://www.tahreemkarim.xyz/now">Now</a></li>
+      <li><a href="https://www.tahreemkarim.xyz/free-resources">Resources</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-left">
+    <h1>A digital<br><em>garden</em><span class="small">— growing slowly.</span></h1>
+    <p class="hero-tagline">Notes, essays, sketches, and half-formed ideas. Some things are seeds. Some have bloomed. Everything is alive.</p>
+    <p class="hero-meta">Est. 2026 · Tahreem Karim · Ann Arbor</p>
+    <div class="hero-links">
+      <a class="hero-link" href="#notes">Notes</a>
+      <a class="hero-link" href="#essays">Essays</a>
+      <a class="hero-link" href="#art">Art</a>
+      <a class="hero-link" href="#desk">The Desk</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <!-- Botanical watercolor illustration (SVG) -->
+    <svg class="botanical" viewBox="0 0 380 420" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="blur1"><feGaussianBlur stdDeviation="2"/></filter>
+        <filter id="blur2"><feGaussianBlur stdDeviation="1.5"/></filter>
+      </defs>
+      <!-- background wash -->
+      <ellipse cx="190" cy="210" rx="160" ry="180" fill="rgba(138,184,154,0.08)" filter="url(#blur1)"/>
+      
+      <!-- Main stem -->
+      <path d="M190 400 C188 350 185 300 190 240 C193 200 188 160 192 100" stroke="#5a8c6e" stroke-width="2" fill="none" stroke-linecap="round"/>
+      
+      <!-- Large left leaf -->
+      <path d="M190 280 C160 260 120 240 100 200 C130 210 165 240 190 260" fill="rgba(90,140,110,0.35)" stroke="rgba(61,107,79,0.4)" stroke-width="0.8"/>
+      <path d="M190 280 C165 268 135 254 100 200" stroke="rgba(61,107,79,0.25)" stroke-width="0.5" fill="none"/>
+      
+      <!-- Large right leaf -->
+      <path d="M190 240 C220 220 265 205 280 165 C250 178 215 210 190 235" fill="rgba(90,140,110,0.3)" stroke="rgba(61,107,79,0.35)" stroke-width="0.8"/>
+      
+      <!-- Small left leaf -->
+      <path d="M189 190 C168 175 145 162 138 135 C158 148 178 168 190 185" fill="rgba(138,184,154,0.4)" stroke="rgba(61,107,79,0.3)" stroke-width="0.7"/>
+      
+      <!-- Small right leaf -->
+      <path d="M191 160 C210 145 230 128 235 105 C215 118 200 140 191 158" fill="rgba(138,184,154,0.35)" stroke="rgba(61,107,79,0.3)" stroke-width="0.7"/>
+
+      <!-- Top bloom -->
+      <circle cx="192" cy="88" r="18" fill="rgba(200,148,58,0.2)" filter="url(#blur2)"/>
+      <circle cx="192" cy="88" r="12" fill="rgba(200,148,58,0.25)"/>
+      <circle cx="188" cy="82" r="7" fill="rgba(200,148,58,0.3)"/>
+      <!-- Petals -->
+      <ellipse cx="192" cy="70" rx="5" ry="9" fill="rgba(200,148,58,0.35)" transform="rotate(-10 192 88)"/>
+      <ellipse cx="192" cy="70" rx="5" ry="9" fill="rgba(184,92,56,0.25)" transform="rotate(30 192 88)"/>
+      <ellipse cx="192" cy="70" rx="5" ry="9" fill="rgba(200,148,58,0.3)" transform="rotate(70 192 88)"/>
+      <ellipse cx="192" cy="70" rx="5" ry="9" fill="rgba(184,92,56,0.25)" transform="rotate(110 192 88)"/>
+      <ellipse cx="192" cy="70" rx="5" ry="9" fill="rgba(200,148,58,0.3)" transform="rotate(150 192 88)"/>
+      <ellipse cx="192" cy="70" rx="5" ry="9" fill="rgba(184,92,56,0.2)" transform="rotate(190 192 88)"/>
+      
+      <!-- Second smaller bloom -->
+      <circle cx="148" cy="148" r="10" fill="rgba(138,184,154,0.3)" filter="url(#blur2)"/>
+      <ellipse cx="148" cy="138" rx="4" ry="7" fill="rgba(90,140,110,0.4)" transform="rotate(20 148 148)"/>
+      <ellipse cx="148" cy="138" rx="4" ry="7" fill="rgba(90,140,110,0.35)" transform="rotate(80 148 148)"/>
+      <ellipse cx="148" cy="138" rx="4" ry="7" fill="rgba(90,140,110,0.3)" transform="rotate(140 148 148)"/>
+      <ellipse cx="148" cy="138" rx="4" ry="7" fill="rgba(90,140,110,0.35)" transform="rotate(200 148 148)"/>
+      <circle cx="148" cy="148" r="4" fill="rgba(200,148,58,0.5)"/>
+
+      <!-- Tiny scattered dots / seeds -->
+      <circle cx="240" cy="190" r="2" fill="rgba(90,140,110,0.3)"/>
+      <circle cx="250" cy="210" r="1.5" fill="rgba(90,140,110,0.25)"/>
+      <circle cx="145" cy="220" r="2" fill="rgba(90,140,110,0.2)"/>
+      <circle cx="160" cy="310" r="1.5" fill="rgba(200,148,58,0.3)"/>
+      <circle cx="220" cy="290" r="2" fill="rgba(90,140,110,0.25)"/>
+
+      <!-- Ground wash -->
+      <ellipse cx="190" cy="400" rx="80" ry="12" fill="rgba(90,140,110,0.1)" filter="url(#blur1)"/>
+    </svg>
+  </div>
+</section>
+
+<div class="divider"><span class="divider-label">🌱 seeds · sprouts · blooms</span></div>
+
+<main class="garden">
+
+  <!-- ZONE 1: NOTES / SEEDS -->
+  <section class="zone" id="notes">
+    <div class="zone-header">
+      <span class="zone-emoji">🌱</span>
+      <h2 class="zone-title">Seeds &amp; <em>Sprouts</em></h2>
+      <span class="zone-desc">Notes · half-formed thoughts · in progress</span>
+    </div>
+    <div class="scatter-field" style="min-height: 480px;">
+      <div class="scatter-item" style="--r:-2.5deg; --tx:0px; --ty:0px; --w:300px; --z:3; left:0%; top:0;">
+        <div class="card" style="--w:300px;">
+          <div class="growth"><span class="growth-dot"></span> Seed</div>
+          <h3 class="card-title">On MinHash and the art of approximate similarity</h3>
+          <p class="card-body">Why Sourmash works, and what it tells us about the tradeoff between precision and scale in genomics.</p>
+          <div class="card-footer"><span class="card-date">Mar 2026</span><span class="card-tag">bioinformatics</span></div>
+        </div>
+      </div>
+      <div class="scatter-item" style="--r:1.8deg; --tx:0px; --ty:20px; --z:2; left:26%; top:30px;">
+        <div class="card" style="--w:310px;">
+          <div class="growth"><span class="growth-dot sprout"></span> Sprout</div>
+          <h3 class="card-title">Science communication as a design problem</h3>
+          <p class="card-body">Most scientific figures are made for other scientists. What changes when you design for someone who doesn't share your vocabulary?</p>
+          <div class="card-footer"><span class="card-date">Feb 2026</span><span class="card-tag gold">design</span></div>
+        </div>
+      </div>
+      <div class="scatter-item" style="--r:-1.2deg; --tx:0px; --ty:10px; --z:1; left:54%; top:10px;">
+        <div class="card" style="--w:290px;">
+          <div class="growth"><span class="growth-dot"></span> Seed</div>
+          <h3 class="card-title">What reduced amino acid alphabets reveal about protein evolution</h3>
+          <p class="card-body">If you collapse 20 amino acids into 8, what survives? Notes from the Seanome journal club.</p>
+          <div class="card-footer"><span class="card-date">Jan 2026</span><span class="card-tag">proteins</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ZONE 2: ESSAYS / BLOOMS -->
+  <section class="zone" id="essays">
+    <div class="zone-header">
+      <span class="zone-emoji">🌸</span>
+      <h2 class="zone-title"><em>Blooms</em> — longer reads</h2>
+      <span class="zone-desc">Essays · technical explainers · finished thoughts</span>
+    </div>
+    <div class="scatter-field" style="min-height: 420px;">
+      <div class="scatter-item" style="--r:-1.5deg; --z:2; left:0%; top:0;">
+        <div class="card" style="--w:340px;">
+          <div class="growth"><span class="growth-dot bloom"></span> Bloom</div>
+          <h3 class="card-title">Why zoonotic disease maps lie — and what better ones look like</h3>
+          <p class="card-body">A deep dive into the epidemiological visualization problem, using the WAHIS dataset as a case study. What does outbreak data actually look like before Covid changed everything?</p>
+          <div class="card-footer"><span class="card-date">2026</span><span class="card-tag">data viz</span></div>
+        </div>
+      </div>
+      <div class="scatter-item" style="--r:2.2deg; --tx:0px; --ty:30px; --z:1; left:34%; top:20px;">
+        <div class="card" style="--w:340px;">
+          <div class="growth"><span class="growth-dot bloom"></span> Bloom</div>
+          <h3 class="card-title">From pipette to Python: a wet lab scientist's guide to not drowning in data</h3>
+          <p class="card-body">What I wish someone had told me when I made the transition. The mental models that actually transfer, and the ones that get in the way.</p>
+          <div class="card-footer"><span class="card-date">2026</span><span class="card-tag rust">personal</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ZONE 3: ART WALL -->
+  <section class="zone" id="art">
+    <div class="zone-header">
+      <span class="zone-emoji">🎨</span>
+      <h2 class="zone-title">The <em>Art Wall</em></h2>
+      <span class="zone-desc">Sketches · photography · made things</span>
+    </div>
+    <div class="scatter-field" style="min-height: 400px;">
+      <div class="scatter-item" style="--r:-3deg; --z:4; left:0%; top:20px;">
+        <div class="art-frame" style="--w:200px;">
+          <div class="art-placeholder" style="height:200px;">[ your art ]</div>
+          <span class="art-caption">add a piece</span>
+        </div>
+      </div>
+      <div class="scatter-item" style="--r:2deg; --ty:40px; --z:3; left:20%; top:0px;">
+        <div class="art-frame" style="--w:220px;">
+          <div class="art-placeholder" style="height:180px;">[ photo ]</div>
+          <span class="art-caption">add a photo</span>
+        </div>
+      </div>
+      <div class="scatter-item" style="--r:-1.5deg; --ty:10px; --z:2; left:42%; top:30px;">
+        <div class="art-frame" style="--w:240px;">
+          <div class="art-placeholder" style="height:220px;">[ sketch ]</div>
+          <span class="art-caption">add a sketch</span>
+        </div>
+      </div>
+      <div class="scatter-item" style="--r:3deg; --ty:20px; --z:1; left:66%; top:10px;">
+        <div class="art-frame" style="--w:200px;">
+          <div class="art-placeholder" style="height:190px;">[ wildflowers ]</div>
+          <span class="art-caption">add something</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ZONE 4: THE DESK -->
+  <section class="zone" id="desk">
+    <div class="zone-header">
+      <span class="zone-emoji">🗂️</span>
+      <h2 class="zone-title">The <em>Desk</em></h2>
+      <span class="zone-desc">Reading · resources · pinned things</span>
+    </div>
+    <div class="scatter-field" style="min-height: 600px;">
+      <div class="scatter-item" style="--r:-2.8deg; --z:5; left:0%; top:0;">
+        <div class="pin-card" style="--w:240px;">
+          <div class="pin-dot green"></div>
+          <p class="pin-title">Currently reading</p>
+          <p class="pin-body"><em>Three Bags Full</em> by Leonie Swann. A murder mystery narrated by sheep. Exactly as charming as it sounds.</p>
+        </div>
+      </div>
+      <div class="scatter-item" style="--r:1.5deg; --ty:30px; --z:3; left:24%; top:20px;">
+        <div class="pin-card" style="--w:250px;">
+          <div class="pin-dot"></div>
+          <p class="pin-title">Interesting paper</p>
+          <p class="pin-body">Ni et al. — genome-wide CRISPR screen for pre-mRNA cleavage and polyadenylation factors. 18,053 genes.</p>
+          <a class="pin-link" href="#">read →</a>
+        </div>
+      </div>
+      <div class="scatter-item" style="--r:-1deg; --z:4; left:50%; top:10px;">
+        <div class="pin-card" style="--w:235px;">
+          <div class="pin-dot gold"></div>
+          <p class="pin-title">Free resources</p>
+          <p class="pin-body">Study guides, templates, and tools I've made or found useful. For anyone who needs them.</p>
+          <a class="pin-link" href="https://www.tahreemkarim.xyz/free-resources">browse →</a>
+        </div>
+      </div>
+      <div class="scatter-item" style="--r:2.5deg; --ty:20px; --z:2; left:0%; top:260px;">
+        <div class="pin-card" style="--w:245px;">
+          <div class="pin-dot green"></div>
+          <p class="pin-title">On my mind</p>
+          <p class="pin-body">How much of scientific communication is a design problem. Specifically how to build tools for wet lab scientists.</p>
+        </div>
+      </div>
+      <div class="scatter-item" style="--r:-1.8deg; --ty:10px; --z:1; left:26%; top:280px;">
+        <div class="pin-card" style="--w:255px;">
+          <div class="pin-dot"></div>
+          <p class="pin-title">The Rising Tigers Initiative</p>
+          <p class="pin-body">A nonprofit I founded supporting South Asian and refugee immigrants — college essays, culture, networking, immigration guidance.</p>
+        </div>
+      </div>
+      <div class="scatter-item" style="--r:3deg; --z:3; left:52%; top:270px;">
+        <div class="pin-card" style="--w:235px;">
+          <div class="pin-dot gold"></div>
+          <p class="pin-title">Portfolio</p>
+          <p class="pin-body">Visualizations, simulators, and presentations. Science, made visible.</p>
+          <a class="pin-link" href="https://portfolio.tahreemkarim.xyz">visit →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>Tahreem Karim · <a href="/cdn-cgi/l/email-protection#d387b2bba1b6b6be98b2a1babe93b4beb2babffdb0bcbe"><span class="__cf_email__" data-cfemail="2672474e5443434b6d47544f4b66414b474f4a0845494b">[email&#160;protected]</span></a></p>
+  <p>tended slowly · <a 
