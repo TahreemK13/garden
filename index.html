@@ -491,6 +491,50 @@
       display: block;
     }
 
+    /* ── FOOTER BREEZE ── */
+    .footer-poppies .breeze {
+      transform-box: fill-box;
+      transform-origin: center bottom;
+      animation-timing-function: ease-in-out;
+      animation-iteration-count: infinite;
+      animation-direction: alternate;
+      will-change: transform;
+    }
+
+    .footer-poppies .sway1 {
+      animation-name: sway1;
+      animation-duration: var(--breeze-duration, 4.8s);
+      animation-delay: var(--breeze-delay, 0s);
+    }
+
+    .footer-poppies .sway2 {
+      animation-name: sway2;
+      animation-duration: var(--breeze-duration, 6.2s);
+      animation-delay: var(--breeze-delay, -1.2s);
+    }
+
+    .footer-poppies .sway3 {
+      animation-name: sway3;
+      animation-duration: var(--breeze-duration, 5.4s);
+      animation-delay: var(--breeze-delay, -2.1s);
+    }
+
+    @keyframes sway1 {
+      from { transform: rotate(-1.2deg); }
+      to   { transform: rotate(1.2deg); }
+    }
+
+    @keyframes sway2 {
+      from { transform: rotate(-0.8deg); }
+      to   { transform: rotate(1.6deg); }
+    }
+
+    @keyframes sway3 {
+      from { transform: rotate(-1.5deg); }
+      to   { transform: rotate(0.9deg); }
+    }
+
+
     footer {
       position: relative;
       z-index: 2;
@@ -535,6 +579,12 @@
       .hero-left h1 { font-size: 3rem; }
       .garden { padding: 0 1.25rem 4rem; }
       nav .nav-inner { padding: 0 1.25rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .footer-poppies .breeze {
+        animation: none !important;
+      }
     }
 
     /* ── MEDIA CARD ── */
@@ -1489,6 +1539,32 @@
 </footer>
 
 </div><!-- end footer-wrap -->
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const svg = document.querySelector('.footer-poppies');
+    if (!svg) return;
+
+    const translatedGroups = [...svg.querySelectorAll('g[transform*="translate("]')]
+      .filter(g => !g.closest('defs'));
+
+    const candidates = translatedGroups.filter(g => {
+      const shapeCount = g.querySelectorAll('path, ellipse, circle, line').length;
+      return shapeCount >= 3;
+    });
+
+    const swayClasses = ['sway1', 'sway2', 'sway3'];
+
+    candidates.forEach((g, i) => {
+      g.classList.add('breeze', swayClasses[i % swayClasses.length]);
+      const duration = (4.6 + (i % 7) * 0.35).toFixed(2);
+      const delay = (-0.55 * (i % 9)).toFixed(2);
+      g.style.setProperty('--breeze-duration', `${duration}s`);
+      g.style.setProperty('--breeze-delay', `${delay}s`);
+    });
+  });
+</script>
 
 </body>
 </html>
