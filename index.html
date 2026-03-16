@@ -260,7 +260,6 @@
     }
     .zone-emoji {
       font-size: 1.2rem;
-      margin-left: auto;
     }
     .zone-title {
       font-family: 'Playfair Display', serif;
@@ -491,50 +490,6 @@
       display: block;
     }
 
-    /* ── FOOTER BREEZE ── */
-    .footer-poppies .breeze {
-      transform-box: fill-box;
-      transform-origin: center bottom;
-      animation-timing-function: ease-in-out;
-      animation-iteration-count: infinite;
-      animation-direction: alternate;
-      will-change: transform;
-    }
-
-    .footer-poppies .sway1 {
-      animation-name: sway1;
-      animation-duration: var(--breeze-duration, 4.8s);
-      animation-delay: var(--breeze-delay, 0s);
-    }
-
-    .footer-poppies .sway2 {
-      animation-name: sway2;
-      animation-duration: var(--breeze-duration, 6.2s);
-      animation-delay: var(--breeze-delay, -1.2s);
-    }
-
-    .footer-poppies .sway3 {
-      animation-name: sway3;
-      animation-duration: var(--breeze-duration, 5.4s);
-      animation-delay: var(--breeze-delay, -2.1s);
-    }
-
-    @keyframes sway1 {
-      from { transform: rotate(-1.2deg); }
-      to   { transform: rotate(1.2deg); }
-    }
-
-    @keyframes sway2 {
-      from { transform: rotate(-0.8deg); }
-      to   { transform: rotate(1.6deg); }
-    }
-
-    @keyframes sway3 {
-      from { transform: rotate(-1.5deg); }
-      to   { transform: rotate(0.9deg); }
-    }
-
-
     footer {
       position: relative;
       z-index: 2;
@@ -579,12 +534,6 @@
       .hero-left h1 { font-size: 3rem; }
       .garden { padding: 0 1.25rem 4rem; }
       nav .nav-inner { padding: 0 1.25rem; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .footer-poppies .breeze {
-        animation: none !important;
-      }
     }
 
     /* ── MEDIA CARD ── */
@@ -897,10 +846,9 @@
       <path d="M191 160 C210 145 230 128 235 105 C215 118 200 140 191 158" fill="rgba(138,184,154,0.35)" stroke="rgba(61,107,79,0.3)" stroke-width="0.7"/>
 
       <!-- Top bloom -->
-      <circle cx="192" cy="88" r="18" fill="rgba(255,180,90,0.20)" filter="url(#blur2)"/>
+      <circle cx="192" cy="88" r="18" fill="rgba(200,148,58,0.2)" filter="url(#blur2)"/>
       <circle cx="192" cy="88" r="12" fill="rgba(200,148,58,0.25)"/>
       <circle cx="188" cy="82" r="7" fill="rgba(200,148,58,0.3)"/>
-      <circle cx="170" cy="72" r="4" fill="rgba(184,92,56,0.25)"/>
       <!-- Petals -->
       <ellipse cx="192" cy="70" rx="5" ry="9" fill="rgba(200,148,58,0.35)" transform="rotate(-10 192 88)"/>
       <ellipse cx="192" cy="70" rx="5" ry="9" fill="rgba(184,92,56,0.25)" transform="rotate(30 192 88)"/>
@@ -911,7 +859,7 @@
       
 
       <!-- Petal dissipation pixels -->
-      <g id="petal-pixels" transform="translate(0 5)">
+      <g id="petal-pixels" transform="translate(0 10)">
         <use href="#pixelCluster3" transform="translate(179 88) rotate(-8)" opacity="0.92"/>
         <use href="#pixelCluster2" transform="translate(171 84) rotate(10)" opacity="0.9"/>
         <use href="#pixelCluster2" transform="translate(164 92) rotate(-6) scale(1.02)" opacity="0.82"/>
@@ -923,9 +871,6 @@
         <use href="#pixelCluster2" transform="translate(118 62) rotate(-7) scale(0.82)" opacity="0.4"/>
         <use href="#pixelCluster1" transform="translate(105 58) rotate(9) scale(0.75)" opacity="0.32"/>
         <use href="#pixelCluster1" transform="translate(93 55) rotate(-11) scale(0.68)" opacity="0.24"/>
-        <use href="#pixelCluster3" transform="translate(167 88) rotate(-5)" opacity="0.92"/>
-        <use href="#pixelCluster3" transform="translate(168 74) rotate(3)" opacity="0.92"/>
-        <use href="#pixelCluster3" transform="translate(170 81) rotate(-10)" opacity="0.92"/>
       </g>
       
       <!-- Second smaller bloom -->
@@ -957,6 +902,7 @@
   <section class="zone" id="interests">
 
     <div class="zone-header">
+      <span class="f4ede0">hjbjlhbjlbnkljnhgjbjnhbjkgvkbjlgvcfdxfhcgjvb </span>
       <span class="zone-emoji">🌱🌿🌻</span>
     </div>
 
@@ -1539,32 +1485,6 @@
 </footer>
 
 </div><!-- end footer-wrap -->
-
-
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const svg = document.querySelector('.footer-poppies');
-    if (!svg) return;
-
-    const translatedGroups = [...svg.querySelectorAll('g[transform*="translate("]')]
-      .filter(g => !g.closest('defs'));
-
-    const candidates = translatedGroups.filter(g => {
-      const shapeCount = g.querySelectorAll('path, ellipse, circle, line').length;
-      return shapeCount >= 3;
-    });
-
-    const swayClasses = ['sway1', 'sway2', 'sway3'];
-
-    candidates.forEach((g, i) => {
-      g.classList.add('breeze', swayClasses[i % swayClasses.length]);
-      const duration = (4.6 + (i % 7) * 0.35).toFixed(2);
-      const delay = (-0.55 * (i % 9)).toFixed(2);
-      g.style.setProperty('--breeze-duration', `${duration}s`);
-      g.style.setProperty('--breeze-delay', `${delay}s`);
-    });
-  });
-</script>
 
 </body>
 </html>
