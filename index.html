@@ -288,9 +288,9 @@
       margin-bottom: 2rem;
     }
 
-    /* The one big pile needs extra height for 5 rows */
+    /* The one big pile needs extra height for 7 rows */
     .pile-field {
-      min-height: 1300px;
+      min-height: 1820px;
       margin-bottom: 4rem;
     }
 
@@ -535,6 +535,244 @@
       .garden { padding: 0 1.25rem 4rem; }
       nav .nav-inner { padding: 0 1.25rem; }
     }
+
+    /* ── MEDIA CARD ── */
+    .media-card {
+      background: var(--white);
+      border: 1px solid var(--rule);
+      width: var(--w, 270px);
+      box-shadow: 2px 4px 16px rgba(44,36,22,0.07);
+      position: relative;
+      overflow: hidden;
+    }
+    .media-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--green-faint);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.25s ease;
+    }
+    .scatter-item:hover .media-card::before { transform: scaleX(1); }
+    .media-card-img {
+      width: 100%;
+      height: 145px;
+      background: linear-gradient(145deg, var(--green-wash) 0%, var(--cream-dark) 60%, #e4d4bc 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .media-card-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .media-card-type {
+      position: absolute;
+      bottom: 7px; left: 8px;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.55rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      background: rgba(253,250,246,0.9);
+      color: var(--ink-light);
+      padding: 0.12rem 0.42rem;
+    }
+    .media-card-body { padding: 0.95rem 1.2rem 1.1rem; }
+    .media-card-source {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.57rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 0.3rem;
+    }
+    .media-card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.9rem;
+      font-weight: 400;
+      line-height: 1.35;
+      color: var(--ink);
+      margin-bottom: 0.4rem;
+    }
+    .media-card-meta {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.57rem;
+      color: var(--ink-faint);
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      margin-top: 0.5rem;
+    }
+    .media-card-meta-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--rule); }
+
+    /* ── SPLIT CARD ── */
+    .split-card {
+      background: var(--white);
+      border: 1px solid var(--rule);
+      width: var(--w, 330px);
+      min-height: 130px;
+      display: flex;
+      box-shadow: 2px 4px 16px rgba(44,36,22,0.07);
+      position: relative;
+      overflow: hidden;
+    }
+    .split-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--green-faint);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.25s ease;
+    }
+    .scatter-item:hover .split-card::before { transform: scaleX(1); }
+    .split-card-img {
+      width: 100px;
+      min-height: 100%;
+      flex-shrink: 0;
+      background: linear-gradient(160deg, #d4e8d8 0%, #c8ddd0 40%, #ddd0bc 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.52rem;
+      color: var(--ink-faint);
+      letter-spacing: 0.05em;
+    }
+    .split-card-text {
+      padding: 0.95rem 1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      flex: 1;
+    }
+    .split-card-kicker {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.56rem;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--green-mid);
+      margin-bottom: 0.25rem;
+    }
+    .split-card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.87rem;
+      font-weight: 400;
+      line-height: 1.35;
+      color: var(--ink);
+      flex: 1;
+      margin-bottom: 0.45rem;
+    }
+    .split-card-foot {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.56rem;
+      color: var(--ink-faint);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* ── QUOTE CARD ── */
+    .quote-card {
+      background: var(--cream-dark);
+      border: 1px solid var(--rule);
+      width: var(--w, 255px);
+      padding: 1.3rem;
+      box-shadow: 2px 4px 16px rgba(44,36,22,0.06);
+      position: relative;
+    }
+    .quote-mark {
+      font-family: 'Playfair Display', serif;
+      font-size: 3.2rem;
+      line-height: 0.55;
+      color: var(--green-faint);
+      margin-bottom: 0.55rem;
+      display: block;
+    }
+    .quote-text {
+      font-family: 'Lora', serif;
+      font-style: italic;
+      font-size: 0.83rem;
+      color: var(--ink-mid);
+      line-height: 1.75;
+      margin-bottom: 0.9rem;
+    }
+    .quote-attr {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.57rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      padding-top: 0.55rem;
+      border-top: 1px solid var(--rule);
+    }
+
+    /* ── TINTED CARD ── */
+    .tinted-card {
+      width: var(--w, 260px);
+      padding: 1.3rem;
+      border: 1px solid rgba(61,107,79,0.18);
+      background: linear-gradient(145deg, #eaf4ee 0%, #e0edd8 100%);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 2px 4px 16px rgba(44,36,22,0.06);
+    }
+    .tinted-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--green);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.25s ease;
+    }
+    .scatter-item:hover .tinted-card::before { transform: scaleX(1); }
+    .tinted-card.rust-tint {
+      background: linear-gradient(145deg, #f7ece4 0%, #f0ddd0 100%);
+      border-color: rgba(184,92,56,0.15);
+    }
+    .tinted-card.rust-tint::before { background: var(--rust); }
+    .tinted-card.gold-tint {
+      background: linear-gradient(145deg, #f8f2e0 0%, #f0e8cc 100%);
+      border-color: rgba(200,148,58,0.18);
+    }
+    .tinted-card.gold-tint::before { background: var(--gold); }
+    .tinted-card-accent {
+      width: 26px; height: 3px;
+      background: var(--green);
+      margin-bottom: 0.75rem;
+      border-radius: 2px;
+    }
+    .tinted-card.rust-tint .tinted-card-accent { background: var(--rust); }
+    .tinted-card.gold-tint .tinted-card-accent { background: var(--gold); }
+    .tinted-card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.93rem;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.35;
+      margin-bottom: 0.45rem;
+    }
+    .tinted-card-body {
+      font-size: 0.8rem;
+      color: var(--ink-mid);
+      line-height: 1.7;
+      margin-bottom: 0.75rem;
+    }
+    .tinted-card-link {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.57rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--green);
+      text-decoration: none;
+      border-bottom: 1px solid var(--green-faint);
+    }
+    .tinted-card.rust-tint .tinted-card-link { color: var(--rust); border-color: #e8c0aa; }
+    .tinted-card.gold-tint .tinted-card-link { color: var(--gold); border-color: #e8d498; }
   </style>
 </head>
 <body>
@@ -699,6 +937,15 @@
         </div>
       </div>
 
+      <!-- NEW — quote card, tucked between rows 2 and 3 -->
+      <div class="scatter-item" style="--r:3deg; --ty:8px; --z:4; left:75%; top:255px;">
+        <div class="quote-card" style="--w:240px;">
+          <span class="quote-mark">"</span>
+          <p class="quote-text">The scientist is not a person who gives the right answers, she's the one who asks the right questions.</p>
+          <div class="quote-attr">Claude Lévi-Strauss</div>
+        </div>
+      </div>
+
       <!-- ROW 3 of pile -->
       <div class="scatter-item" style="--r:-4.5deg; --z:6; left:0%; top:500px;">
         <div class="card" style="--w:340px;">
@@ -722,6 +969,23 @@
         <div class="art-frame" style="--w:230px;">
           <div class="art-placeholder" style="height:200px;">[ sketch ]</div>
           <span class="art-caption">add a sketch</span>
+        </div>
+      </div>
+
+      <!-- NEW — split card between rows 3 and 4 -->
+      <div class="scatter-item" style="--r:-2deg; --z:5; left:36%; top:730px;">
+        <div class="split-card" style="--w:335px;">
+          <div class="split-card-img" style="background: linear-gradient(160deg, #e0ecd8 0%, #d4e4c8 100%);">[ photo ]</div>
+          <div class="split-card-text">
+            <div>
+              <div class="split-card-kicker">Field note</div>
+              <div class="split-card-title">On Digital Gardening — Reverb podcast</div>
+            </div>
+            <div class="split-card-foot">
+              <span>Feb 2026</span>
+              <span class="card-tag gold">listening</span>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -775,6 +1039,79 @@
           <p class="pin-title">Free resources</p>
           <p class="pin-body">Study guides, templates, and tools I've made or found useful. For anyone who needs them.</p>
           <a class="pin-link" href="https://www.tahreemkarim.xyz/free-resources">browse →</a>
+        </div>
+      </div>
+
+      <!-- ROW 6 — new card types -->
+      <div class="scatter-item" style="--r:-2.5deg; --z:6; left:0%; top:1290px;">
+        <div class="media-card" style="--w:275px;">
+          <div class="media-card-img">
+            <div style="font-family:'DM Mono',monospace;font-size:0.58rem;color:#b8a898;letter-spacing:0.06em;">[ field photo ]</div>
+            <span class="media-card-type">Field note</span>
+          </div>
+          <div class="media-card-body">
+            <div class="media-card-source">Tilden Park · Mar 2026</div>
+            <div class="media-card-title">First owl's clover of the season</div>
+            <div class="media-card-meta">
+              <span>wildflowers</span>
+              <span class="media-card-meta-dot"></span>
+              <span>Berkeley Hills</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="scatter-item" style="--r:2deg; --ty:10px; --z:5; left:28%; top:1300px;">
+        <div class="tinted-card" style="--w:285px;">
+          <div class="tinted-card-accent"></div>
+          <div class="tinted-card-title">Science communication as a design problem</div>
+          <p class="tinted-card-body">Most scientific figures are made for other scientists. What changes when you design for someone who doesn't share your vocabulary?</p>
+          <a class="tinted-card-link" href="#">read →</a>
+        </div>
+      </div>
+
+      <div class="scatter-item" style="--r:-1.5deg; --z:4; left:58%; top:1295px;">
+        <div class="tinted-card rust-tint" style="--w:255px;">
+          <div class="tinted-card-accent"></div>
+          <div class="tinted-card-title">The Rising Tigers Initiative</div>
+          <p class="tinted-card-body">A nonprofit I founded supporting South Asian and refugee immigrants — college essays, culture, networking.</p>
+          <a class="tinted-card-link" href="#">visit →</a>
+        </div>
+      </div>
+
+      <!-- ROW 7 — media card with figure + gold tinted card -->
+      <div class="scatter-item" style="--r:3.5deg; --z:6; left:3%; top:1555px;">
+        <div class="media-card" style="--w:270px;">
+          <div class="media-card-img" style="background: linear-gradient(145deg, #dde8f2 0%, #c8d8e8 60%, #bcc8d4 100%);">
+            <div style="font-family:'DM Mono',monospace;font-size:0.58rem;color:#b8a898;letter-spacing:0.06em;">[ paper figure ]</div>
+            <span class="media-card-type">Paper figure</span>
+          </div>
+          <div class="media-card-body">
+            <div class="media-card-source">Ni et al. 2023</div>
+            <div class="media-card-title">CRISPR screen hits across 18,053 genes — polyadenylation factors</div>
+            <div class="media-card-meta">
+              <span>pre-mRNA</span>
+              <span class="media-card-meta-dot"></span>
+              <span>genomics</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="scatter-item" style="--r:-2deg; --ty:5px; --z:5; left:29%; top:1565px;">
+        <div class="quote-card" style="--w:258px; background: #f0ede4;">
+          <span class="quote-mark" style="color: #e0c8a8;">"</span>
+          <p class="quote-text">To do science is to search for repeated patterns, not simply to accumulate facts.</p>
+          <div class="quote-attr">Robert MacArthur</div>
+        </div>
+      </div>
+
+      <div class="scatter-item" style="--r:1.5deg; --z:4; left:57%; top:1558px;">
+        <div class="tinted-card gold-tint" style="--w:252px;">
+          <div class="tinted-card-accent"></div>
+          <div class="tinted-card-title">Free resources</div>
+          <p class="tinted-card-body">Study guides, templates, and tools I've made or found useful. For anyone who needs them.</p>
+          <a class="tinted-card-link" href="https://www.tahreemkarim.xyz/free-resources">browse →</a>
         </div>
       </div>
 
