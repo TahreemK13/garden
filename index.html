@@ -288,6 +288,12 @@
       margin-bottom: 2rem;
     }
 
+    /* The one big pile needs extra height for 5 rows */
+    .pile-field {
+      min-height: 1300px;
+      margin-bottom: 4rem;
+    }
+
     /* Each item is absolutely positioned with baked-in offsets via CSS vars */
     .scatter-item {
       position: absolute;
@@ -504,7 +510,7 @@
     @media (max-width: 900px) {
       .hero { grid-template-columns: 1fr; gap: 2rem; }
       .hero-right { display: none; }
-      .scatter-field { min-height: auto; position: static; }
+      .scatter-field, .pile-field { min-height: auto; position: static; }
       .scatter-item { position: static !important; transform: none !important; margin-bottom: 1rem; }
       .card, .pin-card, .art-frame { width: 100% !important; }
     }
@@ -536,10 +542,10 @@
     <p class="hero-tagline">Notes, essays, sketches, and half formed ideas. Some things are seeds, others have bloomed but everything is alive.</p>
     <p class="hero-meta">Est. 2026 · Tahreem Karim · a Computational Biologist with a flair for the creative</p>
     <div class="hero-links">
-      <a class="hero-link" href="#notes">Notes</a>
-      <a class="hero-link" href="#essays">Essays</a>
-      <a class="hero-link" href="#art">Art</a>
-      <a class="hero-link" href="#desk">The Desk</a>
+      <a class="hero-link" href="#interests">Interests</a>
+      <a class="hero-link" href="https://www.tahreemkarim.xyz/science">Science</a>
+      <a class="hero-link" href="https://portfolio.tahreemkarim.xyz">Portfolio</a>
+      <a class="hero-link" href="https://www.tahreemkarim.xyz/free-resources">Resources</a>
     </div>
   </div>
   <div class="hero-right">
@@ -601,287 +607,166 @@
   </div>
 </section>
 
-<div class="divider"><span class="divider-label">🌱 seeds · sprouts · blooms</span></div>
+<div class="divider"><span class="divider-label">🌿 a little pile of everything</span></div>
 
 <main class="garden">
 
-  <!-- ZONE 1: NOTES / SEEDS -->
-  <section class="zone" id="notes">
-    <!-- Fern illustration -->
+  <!-- THE PILE -->
+  <section class="zone" id="interests">
+    <!-- Fern illustration (background decoration) -->
     <svg class="zone-illustration" viewBox="0 0 280 340" xmlns="http://www.w3.org/2000/svg">
       <defs><filter id="fblur"><feGaussianBlur stdDeviation="1.5"/></filter></defs>
-      <!-- Main stem -->
       <path d="M140 330 C138 280 135 220 140 150 C142 110 138 70 142 30" stroke="#3d6b4f" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-      <!-- Fern fronds left -->
       <path d="M140 290 C115 275 85 258 65 230 C90 242 120 264 140 282" fill="rgba(61,107,79,0.6)" stroke="rgba(61,107,79,0.4)" stroke-width="0.8"/>
       <path d="M140 250 C112 232 80 212 58 180 C85 196 118 224 140 244" fill="rgba(90,140,110,0.5)" stroke="rgba(61,107,79,0.3)" stroke-width="0.7"/>
       <path d="M140 210 C118 196 94 180 78 155 C100 168 126 190 140 205" fill="rgba(61,107,79,0.55)" stroke="rgba(61,107,79,0.35)" stroke-width="0.7"/>
-      <path d="M140 170 C122 158 102 144 90 122 C110 134 130 154 140 166" fill="rgba(90,140,110,0.45)" stroke="rgba(61,107,79,0.3)" stroke-width="0.6"/>
-      <path d="M141 130 C126 120 110 108 100 88 C118 100 134 118 141 126" fill="rgba(61,107,79,0.4)" stroke="rgba(61,107,79,0.25)" stroke-width="0.6"/>
-      <!-- Fern fronds right -->
       <path d="M140 270 C162 254 192 238 212 210 C188 222 158 246 140 264" fill="rgba(90,140,110,0.5)" stroke="rgba(61,107,79,0.35)" stroke-width="0.8"/>
-      <path d="M140 230 C165 214 196 196 216 168 C190 184 160 210 140 224" fill="rgba(61,107,79,0.45)" stroke="rgba(61,107,79,0.3)" stroke-width="0.7"/>
-      <path d="M140 190 C162 176 186 162 200 138 C178 152 156 172 140 184" fill="rgba(90,140,110,0.4)" stroke="rgba(61,107,79,0.28)" stroke-width="0.6"/>
-      <path d="M141 150 C160 138 178 124 190 104 C172 116 154 134 141 146" fill="rgba(61,107,79,0.38)" stroke="rgba(61,107,79,0.25)" stroke-width="0.6"/>
-      <!-- Unfurling top -->
       <path d="M142 30 C150 20 160 15 155 28 C148 38 142 45 142 30" fill="rgba(90,140,110,0.6)" stroke="rgba(61,107,79,0.4)" stroke-width="0.8"/>
-      <!-- Ground shadow -->
       <ellipse cx="140" cy="332" rx="50" ry="8" fill="rgba(61,107,79,0.15)" filter="url(#fblur)"/>
     </svg>
+
     <div class="zone-header">
-      <span class="zone-emoji">🌱</span>
-      <h2 class="zone-title">Seeds &amp; <em>Sprouts</em></h2>
-      <span class="zone-desc">Notes · half-formed thoughts · in progress</span>
+      <span class="zone-emoji">🌿</span>
+      <h2 class="zone-title">What I'm <em>Into</em></h2>
+      <span class="zone-desc">Notes · art · reading · pinned things · half-formed thoughts</span>
     </div>
-    <div class="scatter-field" style="min-height: 480px;">
-      <div class="scatter-item" style="--r:-2.5deg; --tx:0px; --ty:0px; --w:300px; --z:3; left:0%; top:0;">
-        <div class="card" style="--w:300px;">
-          <div class="growth"><span class="growth-dot"></span> Seed</div>
-          <h3 class="card-title">On MinHash and the art of approximate similarity</h3>
-          <p class="card-body">Why Sourmash works, and what it tells us about the tradeoff between precision and scale in genomics.</p>
-          <div class="card-footer"><span class="card-date">Mar 2026</span><span class="card-tag">bioinformatics</span></div>
+
+    <!-- ONE BIG PILE -->
+    <div class="scatter-field pile-field">
+
+      <!-- ROW 1 of pile -->
+      <div class="scatter-item" style="--r:-3.5deg; --z:8; left:0%; top:0px;">
+        <div class="pin-card" style="--w:250px;">
+          <div class="pin-dot green"></div>
+          <p class="pin-title">Currently reading</p>
+          <p class="pin-body"><em>Three Bags Full</em> by Leonie Swann. A murder mystery narrated by sheep. Exactly as charming as it sounds.</p>
         </div>
       </div>
-      <div class="scatter-item" style="--r:1.8deg; --tx:0px; --ty:20px; --z:2; left:26%; top:30px;">
-        <div class="card" style="--w:310px;">
+
+      <div class="scatter-item" style="--r:2.2deg; --ty:15px; --z:7; left:22%; top:10px;">
+        <div class="card" style="--w:300px;">
           <div class="growth"><span class="growth-dot sprout"></span> Sprout</div>
           <h3 class="card-title">Science communication as a design problem</h3>
           <p class="card-body">Most scientific figures are made for other scientists. What changes when you design for someone who doesn't share your vocabulary?</p>
           <div class="card-footer"><span class="card-date">Feb 2026</span><span class="card-tag gold">design</span></div>
         </div>
       </div>
-      <div class="scatter-item" style="--r:-1.2deg; --tx:0px; --ty:10px; --z:1; left:54%; top:10px;">
-        <div class="card" style="--w:290px;">
-          <div class="growth"><span class="growth-dot"></span> Seed</div>
-          <h3 class="card-title">What reduced amino acid alphabets reveal about protein evolution</h3>
-          <p class="card-body">If you collapse 20 amino acids into 8, what survives? Notes from the Seanome journal club.</p>
-          <div class="card-footer"><span class="card-date">Jan 2026</span><span class="card-tag">proteins</span></div>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- ZONE 2: ESSAYS / BLOOMS -->
-  <section class="zone" id="essays">
-    <!-- Poppy illustration -->
-    <svg class="zone-illustration" viewBox="0 0 280 340" xmlns="http://www.w3.org/2000/svg">
-      <defs><filter id="pblur"><feGaussianBlur stdDeviation="2"/></filter></defs>
-      <!-- Stem -->
-      <path d="M140 330 C138 290 136 250 140 200 C142 175 138 140 142 90" stroke="#3d6b4f" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-      <!-- Side stems -->
-      <path d="M140 220 C120 205 100 188 88 165" stroke="#3d6b4f" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-      <path d="M140 180 C162 165 180 148 188 125" stroke="#3d6b4f" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-      <!-- Leaves -->
-      <path d="M140 240 C115 226 88 208 72 180 C98 196 128 220 140 236" fill="rgba(61,107,79,0.55)" stroke="rgba(61,107,79,0.35)" stroke-width="0.8"/>
-      <path d="M140 200 C162 185 188 170 202 144 C178 158 152 180 140 196" fill="rgba(90,140,110,0.45)" stroke="rgba(61,107,79,0.3)" stroke-width="0.7"/>
-      <!-- Small bud on side -->
-      <circle cx="88" cy="158" r="10" fill="rgba(200,148,58,0.4)" filter="url(#pblur)"/>
-      <circle cx="88" cy="158" r="7" fill="rgba(200,148,58,0.5)"/>
-      <ellipse cx="88" cy="148" rx="4" ry="7" fill="rgba(184,92,56,0.45)" transform="rotate(-15 88 158)"/>
-      <ellipse cx="88" cy="148" rx="4" ry="7" fill="rgba(200,148,58,0.4)" transform="rotate(45 88 158)"/>
-      <ellipse cx="88" cy="148" rx="4" ry="7" fill="rgba(184,92,56,0.4)" transform="rotate(105 88 158)"/>
-      <!-- Main bloom top -->
-      <circle cx="142" cy="75" r="30" fill="rgba(184,92,56,0.12)" filter="url(#pblur)"/>
-      <ellipse cx="142" cy="52" rx="14" ry="22" fill="rgba(184,92,56,0.38)" transform="rotate(0 142 75)"/>
-      <ellipse cx="142" cy="52" rx="14" ry="22" fill="rgba(200,148,58,0.32)" transform="rotate(60 142 75)"/>
-      <ellipse cx="142" cy="52" rx="14" ry="22" fill="rgba(184,92,56,0.35)" transform="rotate(120 142 75)"/>
-      <ellipse cx="142" cy="52" rx="14" ry="22" fill="rgba(200,148,58,0.3)" transform="rotate(180 142 75)"/>
-      <ellipse cx="142" cy="52" rx="14" ry="22" fill="rgba(184,92,56,0.32)" transform="rotate(240 142 75)"/>
-      <ellipse cx="142" cy="52" rx="14" ry="22" fill="rgba(200,148,58,0.28)" transform="rotate(300 142 75)"/>
-      <!-- Center -->
-      <circle cx="142" cy="75" r="11" fill="rgba(44,36,22,0.35)"/>
-      <circle cx="142" cy="75" r="6" fill="rgba(44,36,22,0.5)"/>
-      <!-- Pollen dots -->
-      <circle cx="132" cy="68" r="1.5" fill="rgba(200,148,58,0.7)"/>
-      <circle cx="150" cy="66" r="1.5" fill="rgba(200,148,58,0.7)"/>
-      <circle cx="138" cy="64" r="1" fill="rgba(200,148,58,0.6)"/>
-      <circle cx="148" cy="70" r="1" fill="rgba(200,148,58,0.6)"/>
-      <!-- Ground shadow -->
-      <ellipse cx="140" cy="332" rx="50" ry="8" fill="rgba(61,107,79,0.12)" filter="url(#pblur)"/>
-    </svg>
-    <div class="zone-header">
-      <span class="zone-emoji">🌸</span>
-      <h2 class="zone-title"><em>Blooms</em> — longer reads</h2>
-      <span class="zone-desc">Essays · technical explainers · finished thoughts</span>
-    </div>
-    <div class="scatter-field" style="min-height: 420px;">
-      <div class="scatter-item" style="--r:-1.5deg; --z:2; left:0%; top:0;">
-        <div class="card" style="--w:340px;">
-          <div class="growth"><span class="growth-dot bloom"></span> Bloom</div>
-          <h3 class="card-title">Why zoonotic disease maps lie — and what better ones look like</h3>
-          <p class="card-body">A deep dive into the epidemiological visualization problem, using the WAHIS dataset as a case study. What does outbreak data actually look like before Covid changed everything?</p>
-          <div class="card-footer"><span class="card-date">2026</span><span class="card-tag">data viz</span></div>
-        </div>
-      </div>
-      <div class="scatter-item" style="--r:2.2deg; --tx:0px; --ty:30px; --z:1; left:34%; top:20px;">
-        <div class="card" style="--w:340px;">
-          <div class="growth"><span class="growth-dot bloom"></span> Bloom</div>
-          <h3 class="card-title">From pipette to Python: a wet lab scientist's guide to not drowning in data</h3>
-          <p class="card-body">What I wish someone had told me when I made the transition. The mental models that actually transfer, and the ones that get in the way.</p>
-          <div class="card-footer"><span class="card-date">2026</span><span class="card-tag rust">personal</span></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ZONE 3: ART WALL -->
-  <section class="zone" id="art">
-    <!-- Branch with leaves illustration -->
-    <svg class="zone-illustration" viewBox="0 0 280 340" xmlns="http://www.w3.org/2000/svg">
-      <defs><filter id="bblur"><feGaussianBlur stdDeviation="1.8"/></filter></defs>
-      <!-- Main branch diagonal -->
-      <path d="M40 320 C80 280 120 240 160 190 C185 162 210 130 240 90" stroke="#3d6b4f" stroke-width="3" fill="none" stroke-linecap="round"/>
-      <!-- Sub branches -->
-      <path d="M100 260 C85 240 70 218 62 195" stroke="#5a8c6e" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-      <path d="M140 215 C128 195 118 172 115 148" stroke="#5a8c6e" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-      <path d="M180 170 C195 150 205 128 208 105" stroke="#5a8c6e" stroke-width="1.6" fill="none" stroke-linecap="round"/>
-      <path d="M160 190 C175 178 190 162 198 142" stroke="#5a8c6e" stroke-width="1.4" fill="none" stroke-linecap="round"/>
-      <!-- Leaves along main branch -->
-      <path d="M80 285 C62 272 44 255 38 232 C58 248 76 270 80 283" fill="rgba(61,107,79,0.55)" stroke="rgba(61,107,79,0.35)" stroke-width="0.8"/>
-      <path d="M80 285 C96 270 112 252 116 228 C98 246 82 268 80 283" fill="rgba(90,140,110,0.45)" stroke="rgba(61,107,79,0.3)" stroke-width="0.7"/>
-      <path d="M118 248 C100 236 82 218 78 196 C96 212 114 234 118 246" fill="rgba(61,107,79,0.5)" stroke="rgba(61,107,79,0.32)" stroke-width="0.8"/>
-      <path d="M118 248 C134 234 148 215 150 192 C134 210 120 232 118 246" fill="rgba(90,140,110,0.42)" stroke="rgba(61,107,79,0.28)" stroke-width="0.7"/>
-      <path d="M158 205 C140 193 124 174 122 152 C138 168 156 190 158 203" fill="rgba(61,107,79,0.48)" stroke="rgba(61,107,79,0.3)" stroke-width="0.7"/>
-      <path d="M158 205 C174 190 186 172 186 150 C172 168 160 188 158 203" fill="rgba(90,140,110,0.4)" stroke="rgba(61,107,79,0.26)" stroke-width="0.6"/>
-      <path d="M196 162 C180 148 166 130 166 108 C180 124 194 146 196 160" fill="rgba(61,107,79,0.44)" stroke="rgba(61,107,79,0.28)" stroke-width="0.6"/>
-      <path d="M196 162 C210 148 220 130 218 108 C206 126 198 148 196 160" fill="rgba(90,140,110,0.36)" stroke="rgba(61,107,79,0.24)" stroke-width="0.6"/>
-      <!-- Small berries -->
-      <circle cx="62" cy="192" r="5" fill="rgba(184,92,56,0.5)"/>
-      <circle cx="70" cy="183" r="4" fill="rgba(184,92,56,0.45)"/>
-      <circle cx="57" cy="184" r="3.5" fill="rgba(200,148,58,0.5)"/>
-      <circle cx="114" cy="144" r="5" fill="rgba(184,92,56,0.48)"/>
-      <circle cx="122" cy="136" r="4" fill="rgba(200,148,58,0.45)"/>
-      <circle cx="208" cy="102" r="5" fill="rgba(184,92,56,0.45)"/>
-      <circle cx="216" cy="94" r="4" fill="rgba(200,148,58,0.42)"/>
-      <circle cx="222" cy="104" r="3.5" fill="rgba(184,92,56,0.4)"/>  
-      </svg>
-
-
-    
-    <div class="zone-header">
-      <span class="zone-emoji">🎨</span>
-      <h2 class="zone-title">The <em>Art Wall</em></h2>
-      <span class="zone-desc">Sketches · photography · made things</span>
-    </div>
-    <div class="scatter-field" style="min-height: 400px;">
-      <div class="scatter-item" style="--r:-3deg; --z:4; left:0%; top:20px;">
-        <div class="art-frame" style="--w:200px;">
-          <div class="art-placeholder" style="height:200px;">[ your art ]</div>
+      <div class="scatter-item" style="--r:-1.8deg; --ty:5px; --z:6; left:55%; top:0px;">
+        <div class="art-frame" style="--w:215px;">
+          <div class="art-placeholder" style="height:190px;">[ your art ]</div>
           <span class="art-caption">add a piece</span>
         </div>
       </div>
-      <div class="scatter-item" style="--r:2deg; --ty:40px; --z:3; left:20%; top:0px;">
-        <div class="art-frame" style="--w:220px;">
-          <div class="art-placeholder" style="height:180px;">[ photo ]</div>
+
+      <!-- ROW 2 of pile -->
+      <div class="scatter-item" style="--r:4deg; --z:5; left:3%; top:240px;">
+        <div class="card" style="--w:290px;">
+          <div class="growth"><span class="growth-dot"></span> Seed</div>
+          <h3 class="card-title">On MinHash and the art of approximate similarity</h3>
+          <p class="card-body">Why Sourmash works, and what it tells us about the tradeoff between precision and scale in genomics.</p>
+          <div class="card-footer"><span class="card-date">Mar 2026</span><span class="card-tag">bioinformatics</span></div>
+        </div>
+      </div>
+
+      <div class="scatter-item" style="--r:-2.5deg; --ty:20px; --z:9; left:28%; top:260px;">
+        <div class="pin-card" style="--w:255px;">
+          <div class="pin-dot gold"></div>
+          <p class="pin-title">On my mind</p>
+          <p class="pin-body">How much of scientific communication is a design problem. Specifically how to build tools for wet lab scientists.</p>
+        </div>
+      </div>
+
+      <div class="scatter-item" style="--r:1.5deg; --z:4; left:56%; top:245px;">
+        <div class="art-frame" style="--w:225px;">
+          <div class="art-placeholder" style="height:175px;">[ photo ]</div>
           <span class="art-caption">add a photo</span>
         </div>
       </div>
-      <div class="scatter-item" style="--r:-1.5deg; --ty:10px; --z:2; left:42%; top:30px;">
-        <div class="art-frame" style="--w:240px;">
-          <div class="art-placeholder" style="height:220px;">[ sketch ]</div>
-          <span class="art-caption">add a sketch</span>
-        </div>
-      </div>
-      <div class="scatter-item" style="--r:3deg; --ty:20px; --z:1; left:66%; top:10px;">
-        <div class="art-frame" style="--w:200px;">
-          <div class="art-placeholder" style="height:190px;">[ wildflowers ]</div>
-          <span class="art-caption">add something</span>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- ZONE 4: THE DESK -->
-  <section class="zone" id="desk">
-    <!-- Trailing vine illustration -->
-    <svg class="zone-illustration" viewBox="0 0 280 340" xmlns="http://www.w3.org/2000/svg">
-      <defs><filter id="vblur"><feGaussianBlur stdDeviation="1.5"/></filter></defs>
-      <!-- Main vine, flowing S-curve -->
-      <path d="M260 20 C220 50 180 80 160 120 C140 158 150 195 130 230 C110 265 80 285 60 320" stroke="#3d6b4f" stroke-width="2" fill="none" stroke-linecap="round"/>
-      <!-- Tendrils -->
-      <path d="M200 80 C210 65 225 55 230 40" stroke="#5a8c6e" stroke-width="1.2" fill="none" stroke-linecap="round"/>
-      <path d="M160 120 C148 105 140 88 145 70" stroke="#5a8c6e" stroke-width="1.2" fill="none" stroke-linecap="round"/>
-      <path d="M148 168 C135 155 128 138 135 120" stroke="#5a8c6e" stroke-width="1.2" fill="none" stroke-linecap="round"/>
-      <path d="M128 230 C115 215 110 196 118 178" stroke="#5a8c6e" stroke-width="1.2" fill="none" stroke-linecap="round"/>
-      <path d="M88 282 C75 268 72 250 80 234" stroke="#5a8c6e" stroke-width="1.2" fill="none" stroke-linecap="round"/>
-      <!-- Curly tendrils -->
-      <path d="M170 100 C178 88 188 82 185 95 C182 105 172 108 170 100" stroke="#5a8c6e" stroke-width="1" fill="none" stroke-linecap="round"/>
-      <path d="M135 195 C125 183 118 176 124 188 C130 198 138 198 135 195" stroke="#5a8c6e" stroke-width="1" fill="none" stroke-linecap="round"/>
-      <!-- Heart-shaped leaves along vine -->
-      <path d="M220 62 C210 52 198 52 200 65 C202 76 216 78 220 62" fill="rgba(90,140,110,0.55)" stroke="rgba(61,107,79,0.35)" stroke-width="0.8"/>
-      <path d="M220 62 C230 52 242 54 238 66 C234 76 222 76 220 62" fill="rgba(61,107,79,0.5)" stroke="rgba(61,107,79,0.3)" stroke-width="0.8"/>
-      <path d="M175 128 C165 118 153 118 155 131 C157 142 171 144 175 128" fill="rgba(90,140,110,0.5)" stroke="rgba(61,107,79,0.32)" stroke-width="0.7"/>
-      <path d="M175 128 C185 118 197 120 193 132 C189 142 177 142 175 128" fill="rgba(61,107,79,0.45)" stroke="rgba(61,107,79,0.28)" stroke-width="0.7"/>
-      <path d="M148 185 C138 175 126 175 128 188 C130 199 144 201 148 185" fill="rgba(90,140,110,0.48)" stroke="rgba(61,107,79,0.3)" stroke-width="0.7"/>
-      <path d="M148 185 C158 175 170 177 166 189 C162 199 150 199 148 185" fill="rgba(61,107,79,0.42)" stroke="rgba(61,107,79,0.26)" stroke-width="0.7"/>
-      <path d="M108 248 C98 238 86 238 88 251 C90 262 104 264 108 248" fill="rgba(90,140,110,0.45)" stroke="rgba(61,107,79,0.28)" stroke-width="0.6"/>
-      <path d="M108 248 C118 238 130 240 126 252 C122 262 110 262 108 248" fill="rgba(61,107,79,0.4)" stroke="rgba(61,107,79,0.24)" stroke-width="0.6"/>
-      <path d="M72 298 C62 288 50 288 52 301 C54 312 68 314 72 298" fill="rgba(90,140,110,0.42)" stroke="rgba(61,107,79,0.26)" stroke-width="0.6"/>
-      <path d="M72 298 C82 288 94 290 90 302 C86 312 74 312 72 298" fill="rgba(61,107,79,0.38)" stroke="rgba(61,107,79,0.22)" stroke-width="0.6"/>
-      <!-- Small flowers on tendrils -->
-      <circle cx="230" cy="38" r="6" fill="rgba(200,148,58,0.4)" filter="url(#vblur)"/>
-      <circle cx="230" cy="38" r="4" fill="rgba(200,148,58,0.55)"/>
-      <circle cx="144" cy="68" r="5" fill="rgba(184,92,56,0.4)" filter="url(#vblur)"/>
-      <circle cx="144" cy="68" r="3.5" fill="rgba(184,92,56,0.5)"/>
-      <circle cx="80" cy="232" r="5" fill="rgba(200,148,58,0.38)" filter="url(#vblur)"/>
-      <circle cx="80" cy="232" r="3.5" fill="rgba(200,148,58,0.5)"/>
-    </svg>
-    <div class="zone-header">
-      <span class="zone-emoji">🗂️</span>
-      <h2 class="zone-title">The <em>Desk</em></h2>
-      <span class="zone-desc">Reading · resources · pinned things</span>
-    </div>
-    <div class="scatter-field" style="min-height: 600px;">
-      <div class="scatter-item" style="--r:-2.8deg; --z:5; left:0%; top:0;">
-        <div class="pin-card" style="--w:240px;">
-          <div class="pin-dot green"></div>
-          <p class="pin-title">Currently reading</p>
-          <p class="pin-body"><em>Three Bags Full</em> by Leonie Swann. A murder mystery narrated by sheep. Exactly as charming as it sounds.</p>
+      <!-- ROW 3 of pile -->
+      <div class="scatter-item" style="--r:-4.5deg; --z:6; left:0%; top:500px;">
+        <div class="card" style="--w:340px;">
+          <div class="growth"><span class="growth-dot bloom"></span> Bloom</div>
+          <h3 class="card-title">Why zoonotic disease maps lie — and what better ones look like</h3>
+          <p class="card-body">A deep dive into the epidemiological visualization problem, using the WAHIS dataset as a case study.</p>
+          <div class="card-footer"><span class="card-date">2026</span><span class="card-tag">data viz</span></div>
         </div>
       </div>
-      <div class="scatter-item" style="--r:1.5deg; --ty:30px; --z:3; left:24%; top:20px;">
-        <div class="pin-card" style="--w:250px;">
+
+      <div class="scatter-item" style="--r:2.8deg; --ty:10px; --z:5; left:33%; top:510px;">
+        <div class="pin-card" style="--w:248px;">
           <div class="pin-dot"></div>
           <p class="pin-title">Interesting paper</p>
           <p class="pin-body">Ni et al. — genome-wide CRISPR screen for pre-mRNA cleavage and polyadenylation factors. 18,053 genes.</p>
           <a class="pin-link" href="#">read →</a>
         </div>
       </div>
-      <div class="scatter-item" style="--r:-1deg; --z:4; left:50%; top:10px;">
-        <div class="pin-card" style="--w:235px;">
-          <div class="pin-dot gold"></div>
-          <p class="pin-title">Free resources</p>
-          <p class="pin-body">Study guides, templates, and tools I've made or found useful. For anyone who needs them.</p>
-          <a class="pin-link" href="https://www.tahreemkarim.xyz/free-resources">browse →</a>
+
+      <div class="scatter-item" style="--r:-1.2deg; --z:3; left:58%; top:495px;">
+        <div class="art-frame" style="--w:230px;">
+          <div class="art-placeholder" style="height:200px;">[ sketch ]</div>
+          <span class="art-caption">add a sketch</span>
         </div>
       </div>
-      <div class="scatter-item" style="--r:2.5deg; --ty:20px; --z:2; left:0%; top:260px;">
+
+      <!-- ROW 4 of pile -->
+      <div class="scatter-item" style="--r:3.5deg; --z:7; left:2%; top:760px;">
         <div class="pin-card" style="--w:245px;">
           <div class="pin-dot green"></div>
-          <p class="pin-title">On my mind</p>
-          <p class="pin-body">How much of scientific communication is a design problem. Specifically how to build tools for wet lab scientists.</p>
-        </div>
-      </div>
-      <div class="scatter-item" style="--r:-1.8deg; --ty:10px; --z:1; left:26%; top:280px;">
-        <div class="pin-card" style="--w:255px;">
-          <div class="pin-dot"></div>
           <p class="pin-title">The Rising Tigers Initiative</p>
           <p class="pin-body">A nonprofit I founded supporting South Asian and refugee immigrants — college essays, culture, networking, immigration guidance.</p>
         </div>
       </div>
-      <div class="scatter-item" style="--r:3deg; --z:3; left:52%; top:270px;">
-        <div class="pin-card" style="--w:235px;">
+
+      <div class="scatter-item" style="--r:-2deg; --ty:0px; --z:6; left:26%; top:775px;">
+        <div class="card" style="--w:310px;">
+          <div class="growth"><span class="growth-dot bloom"></span> Bloom</div>
+          <h3 class="card-title">From pipette to Python</h3>
+          <p class="card-body">What I wish someone had told me when I made the transition. The mental models that actually transfer, and the ones that get in the way.</p>
+          <div class="card-footer"><span class="card-date">2026</span><span class="card-tag rust">personal</span></div>
+        </div>
+      </div>
+
+      <div class="scatter-item" style="--r:1deg; --z:4; left:58%; top:760px;">
+        <div class="pin-card" style="--w:240px;">
           <div class="pin-dot gold"></div>
           <p class="pin-title">Portfolio</p>
           <p class="pin-body">Visualizations, simulators, and presentations. Science, made visible.</p>
           <a class="pin-link" href="https://portfolio.tahreemkarim.xyz">visit →</a>
         </div>
       </div>
-    </div>
-  </section>
+
+      <!-- ROW 5 — art + resources -->
+      <div class="scatter-item" style="--r:-3deg; --z:3; left:5%; top:1030px;">
+        <div class="art-frame" style="--w:220px;">
+          <div class="art-placeholder" style="height:195px;">[ wildflowers ]</div>
+          <span class="art-caption">add something</span>
+        </div>
+      </div>
+
+      <div class="scatter-item" style="--r:2deg; --ty:5px; --z:5; left:28%; top:1045px;">
+        <div class="card" style="--w:295px;">
+          <div class="growth"><span class="growth-dot"></span> Seed</div>
+          <h3 class="card-title">What reduced amino acid alphabets reveal about protein evolution</h3>
+          <p class="card-body">If you collapse 20 amino acids into 8, what survives? Notes from the Seanome journal club.</p>
+          <div class="card-footer"><span class="card-date">Jan 2026</span><span class="card-tag">proteins</span></div>
+        </div>
+      </div>
+
+      <div class="scatter-item" style="--r:-1.5deg; --z:4; left:57%; top:1035px;">
+        <div class="pin-card" style="--w:245px;">
+          <div class="pin-dot green"></div>
+          <p class="pin-title">Free resources</p>
+          <p class="pin-body">Study guides, templates, and tools I've made or found useful. For anyone who needs them.</p>
+          <a class="pin-link" href="https://www.tahreemkarim.xyz/free-resources">browse →</a>
+        </div>
+      </div>
+
+    </div><!-- end pile -->
 
 </main>
 
 <footer>
   <p>Tahreem Karim · <a href="/cdn-cgi/l/email-protection#d387b2bba1b6b6be98b2a1babe93b4beb2babffdb0bcbe"><span class="__cf_email__" data-cfemail="2672474e5443434b6d47544f4b66414b474f4a0845494b">[email&#160;protected]</span></a></p>
-  <p>tended slowly · <a 
+  <p>tended slowly · <a
