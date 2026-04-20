@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Can ML Read a Publisher? · Tahreem's Garden</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=Lora:ital,wght@0,300;0,400;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #f4ede0;
+      --cream-dark: #ecddd0;
+      --cream-deeper: #e0cdb8;
+      --ink: #2c2416;
+      --ink-mid: #5a4a38;
+      --ink-light: #8a7a6a;
+      --ink-faint: #b8a898;
+      --green: #3d6b4f;
+      --green-mid: #5a8c6e;
+      --green-light: #8ab89a;
+      --green-faint: #c8ddd0;
+      --green-wash: #e8f0eb;
+      --rust: #b85c38;
+      --gold: #c8943a;
+      --rule: #d8cabb;
+      --white: #fdfaf6;
+    }
+
+    html { font-size: 16px; scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: 'Lora', serif;
+      font-weight: 300;
+      line-height: 1.7;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        radial-gradient(ellipse 800px 600px at 10% 20%, rgba(90,140,110,0.07) 0%, transparent 70%),
+        radial-gradient(ellipse 600px 800px at 90% 70%, rgba(200,148,58,0.05) 0%, transparent 70%),
+        radial-gradient(ellipse 500px 400px at 50% 90%, rgba(90,140,110,0.06) 0%, transparent 70%),
+        radial-gradient(ellipse 300px 300px at 80% 10%, rgba(184,92,56,0.04) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    /* ── NAV (verbatim from index) ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(244,237,224,0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--rule);
+      padding: 1rem 0;
+    }
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .nav-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-style: italic;
+      color: var(--green);
+      text-decoration: none;
+      letter-spacing: 0.01em;
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--ink-light);
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.15s;
+    }
+    .nav-links a:hover { color: var(--green); }
+
+    /* ── CARD (verbatim from index) ── */
+    .card {
+      background: var(--white);
+      border: 1px solid var(--rule);
+      padding: 1.4rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 2px 4px 16px rgba(44,36,22,0.07);
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--green-faint);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.25s ease;
+    }
+    .card:hover::before { transform: scaleX(1); }
+
+    .growth {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .growth-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green-faint); }
+    .growth-dot.sprout { background: var(--green-light); }
+    .growth-dot.bloom  { background: var(--green); }
+
+    .card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.35;
+      color: var(--ink);
+      margin-bottom: 0.5rem;
+    }
+    .card-title em { font-style: italic; color: var(--green-mid); }
+
+    .card-body {
+      font-size: 0.82rem;
+      color: var(--ink-mid);
+      line-height: 1.7;
+      margin-bottom: 1rem;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--cream-dark);
+    }
+    .card-date {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      color: var(--ink-faint);
+      letter-spacing: 0.04em;
+    }
+    .card-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      background: var(--green-wash);
+      color: var(--green);
+      padding: 0.15rem 0.5rem;
+      border-radius: 1px;
+    }
+    .card-tag.rust { background: #f5ede8; color: var(--rust); }
+    .card-tag.gold { background: #f5f0e0; color: var(--gold); }
+
+    /* ── FOOTER (verbatim from index) ── */
+    .footer-wrap { position: relative; z-index: 1; margin-top: 4rem; overflow: hidden; }
+    footer {
+      position: relative;
+      z-index: 2;
+      border-top: 1px solid var(--rule);
+      padding: 2rem 2.5rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    footer p {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--ink-faint);
+      letter-spacing: 0.04em;
+    }
+    footer a { color: var(--green); text-decoration: none; }
+
+    /* ── ANIMATIONS (verbatim from index) ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── PAGE-SPECIFIC ── */
+    .page {
+      position: relative;
+      z-index: 1;
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 4.5rem 2.5rem 8rem;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .breadcrumb {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 3rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .breadcrumb a { color: var(--green); text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+    .breadcrumb-sep { color: var(--rule); }
+
+    header.post-header { margin-bottom: 2.5rem; }
+
+    .stage-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 1.25rem;
+    }
+
+    .post-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.75rem;
+      font-weight: 400;
+      line-height: 1.12;
+      letter-spacing: -0.015em;
+      color: var(--ink);
+      margin-bottom: 1rem;
+    }
+    .post-header h1 em { font-style: italic; color: var(--green); }
+
+    .post-lede {
+      font-size: 1rem;
+      font-style: italic;
+      color: var(--ink-mid);
+      line-height: 1.8;
+      border-left: 2px solid var(--green-faint);
+      padding-left: 1.2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .post-meta {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.06em;
+      color: var(--ink-faint);
+      text-transform: uppercase;
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.25rem;
+    }
+
+    .tags-row { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+
+    .rule { height: 1px; background: var(--rule); margin: 2.75rem 0; }
+
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .section-label::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+
+    .prose { font-size: 0.93rem; color: var(--ink-mid); line-height: 1.9; margin-bottom: 1.25rem; }
+    .prose strong { font-weight: 400; color: var(--ink); }
+
+    h2.sh {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 0.75rem;
+    }
+    h2.sh em { font-style: italic; color: var(--green-mid); }
+
+    .update-note {
+      background: var(--green-wash);
+      border: 1px solid var(--green-faint);
+      padding: 1rem 1.25rem;
+      margin: 1.75rem 0;
+      font-size: 0.8rem;
+      color: var(--green-mid);
+      line-height: 1.65;
+    }
+    .update-note strong {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--green);
+      display: block;
+      margin-bottom: 0.35rem;
+    }
+
+    /* arch cards reuse .card border-top trick with per-class color override */
+    .arch-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin: 1.75rem 0; }
+    .arch-card {
+      background: var(--white);
+      border: 1px solid var(--rule);
+      padding: 1.2rem;
+      position: relative;
+      box-shadow: 2px 4px 12px rgba(44,36,22,0.05);
+    }
+    .arch-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; }
+    .arch-card.img-b::before  { background: var(--gold); }
+    .arch-card.txt-b::before  { background: var(--rust); }
+    .arch-card.fuse-b::before { background: var(--green); }
+    .arch-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.54rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 0.45rem;
+    }
+    .arch-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.9rem;
+      color: var(--ink);
+      margin-bottom: 0.35rem;
+    }
+    .arch-detail { font-size: 0.72rem; color: var(--ink-light); line-height: 1.55; }
+
+    code {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.78em;
+      background: var(--cream-dark);
+      padding: 0.05rem 0.3rem;
+      color: var(--ink-mid);
+    }
+
+    .code-block {
+      background: var(--ink);
+      color: #d4c5a8;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      line-height: 1.75;
+      padding: 1.5rem;
+      margin: 1.75rem 0;
+      overflow-x: auto;
+      position: relative;
+    }
+    .code-block::before {
+      content: 'pseudocode';
+      position: absolute;
+      top: 0.55rem; right: 0.8rem;
+      font-size: 0.5rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(212,197,168,0.3);
+    }
+    .ck { color: #c8943a; }
+    .cf { color: #8ab89a; }
+    .cc { color: #7a8c6a; }
+
+    .ablation-wrap {
+      background: var(--white);
+      border: 1px solid var(--rule);
+      margin: 1.75rem 0;
+      box-shadow: 2px 4px 12px rgba(44,36,22,0.05);
+      overflow: hidden;
+    }
+    .ablation-header {
+      background: var(--cream-dark);
+      padding: 0.65rem 1.25rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.56rem;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+    }
+    table { width: 100%; border-collapse: collapse; }
+    th {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.56rem;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      text-align: left;
+      padding: 0.6rem 1.25rem;
+      border-bottom: 1px solid var(--rule);
+    }
+    td { font-size: 0.82rem; color: var(--ink-mid); padding: 0.6rem 1.25rem; border-bottom: 1px solid var(--cream-dark); }
+    tr:last-child td { border-bottom: none; }
+    td:first-child { font-family: 'Playfair Display', serif; font-style: italic; color: var(--ink); }
+    .pending { font-family: 'DM Mono', monospace; font-size: 0.58rem; color: var(--ink-faint); letter-spacing: 0.05em; }
+
+    .ref-list { list-style: none; }
+    .ref-list li {
+      font-size: 0.78rem;
+      color: var(--ink-light);
+      line-height: 1.65;
+      padding: 0.65rem 0;
+      border-bottom: 1px solid var(--cream-dark);
+      display: flex;
+      gap: 0.75rem;
+      align-items: baseline;
+    }
+    .ref-list li:last-child { border-bottom: none; }
+    .ref-num { font-family: 'DM Mono', monospace; font-size: 0.54rem; color: var(--ink-faint); flex-shrink: 0; }
+    .ref-list a { color: var(--green); font-family: 'DM Mono', monospace; font-size: 0.65em; }
+
+    @media (max-width: 700px) {
+      .page { padding: 3rem 1.25rem 5rem; }
+      .post-header h1 { font-size: 2rem; }
+      .arch-grid { grid-template-columns: 1fr; }
+      nav .nav-inner { padding: 0 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-name" href="../index.html">Tahreem's Garden</a>
+    <ul class="nav-links">
+      <li><a href="https://www.tahreemkarim.xyz/science">Science</a></li>
+      <li><a href="https://portfolio.tahreemkarim.xyz">Portfolio</a></li>
+      <li><a href="https://www.tahreemkarim.xyz/now">Now</a></li>
+      <li><a href="https://www.tahreemkarim.xyz/free-resources">Resources</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main class="page">
+
+  <div class="breadcrumb">
+    <a href="../index.html">garden</a>
+    <span class="breadcrumb-sep">→</span>
+    <span>seedling</span>
+    <span class="breadcrumb-sep">·</span>
+    <span>machine learning</span>
+  </div>
+
+  <header class="post-header">
+    <div class="stage-badge">
+      <span class="growth-dot sprout"></span>
+      Seedling — actively sprouting
+    </div>
+
+    <h1>Can ML read a <em>publisher</em>?</h1>
+
+    <p class="post-lede">
+      Are Marvel and DC distinguishable as institutions by their pages — and which signal is more diagnostic, image or text?
+    </p>
+
+    <div class="post-meta">
+      <span>April 2026</span>
+      <span>·</span>
+      <span>PyTorch · DistilBERT · ResNet-50</span>
+    </div>
+
+    <div class="tags-row">
+      <span class="card-tag">machine learning</span>
+      <span class="card-tag">multimodal</span>
+      <span class="card-tag gold">comics</span>
+      <span class="card-tag rust">portfolio</span>
+    </div>
+  </header>
+
+  <div class="rule"></div>
+
+  <div class="section-label">The question</div>
+
+  <p class="prose">
+    Marvel and DC are not just IP libraries — they are distinct aesthetic institutions with decades of accumulated visual and narrative style. Different color palettes, different page geometry, different editorial voices. A comics reader develops an intuition for publisher identity that operates below conscious articulation. Can a model learn the same?
+  </p>
+  <p class="prose">
+    This project frames publisher classification as a proxy for <strong>cultural signal detection</strong>. If a multimodal classifier can reliably separate the two publishers, and if we can isolate which modality is more diagnostic, we learn something about where institutional identity actually lives in the artifact — in the image, in the words, or in their combination.
+  </p>
+
+  <div class="update-note">
+    <strong>Status · April 2026</strong>
+    Data pipeline underway. Target ~200–400 labeled (cover image, description) pairs via the Comic Vine API. Scraper drafted; awaiting API key. Architecture frozen — running ablations once data is collected.
+  </div>
+
+  <div class="rule"></div>
+
+  <div class="section-label">Architecture</div>
+  <h2 class="sh">A late-fusion multimodal classifier</h2>
+
+  <p class="prose">
+    Three ablation variants, trained and compared. The fusion model is the primary interest; the two unimodal variants provide the diagnostic baseline.
+  </p>
+
+  <div class="arch-grid">
+    <div class="arch-card img-b">
+      <div class="arch-label">Branch 01 · Image</div>
+      <div class="arch-title">ResNet-50</div>
+      <div class="arch-detail">Pretrained ImageNet weights, frozen backbone. 2048-dim embedding via <code>torchvision.models</code>.</div>
+    </div>
+    <div class="arch-card txt-b">
+      <div class="arch-label">Branch 02 · Text</div>
+      <div class="arch-title">DistilBERT</div>
+      <div class="arch-detail">CLS token, frozen encoder. 768-dim embedding via <code>transformers</code>.</div>
+    </div>
+    <div class="arch-card fuse-b">
+      <div class="arch-label">Fusion · Late</div>
+      <div class="arch-title">Concatenate → MLP</div>
+      <div class="arch-detail">Both branches projected to shared dim, concatenated, passed through dense head → softmax (Marvel / DC).</div>
+    </div>
+  </div>
+
+  <p class="prose">
+    Late fusion was chosen over cross-attention or early fusion: each branch stays interpretable and the ablation comparison stays clean. If text-only matches the fused model, the image branch is redundant for this task — and vice versa.
+  </p>
+
+  <div class="code-block"><span class="cc"># Simplified forward pass</span>
+<span class="ck">class</span> <span class="cf">ComicClassifier</span>(nn.Module):
+  <span class="ck">def</span> <span class="cf">forward</span>(self, image, input_ids, attention_mask):
+    img_feat  = self.img_proj(self.resnet(image))        <span class="cc"># → shared_dim</span>
+    text_feat = self.txt_proj(self.bert(                 <span class="cc"># → shared_dim</span>
+                  input_ids, attention_mask
+                ).last_hidden_state[:, 0])
+    fused = torch.cat([img_feat, text_feat], dim=-1)
+    <span class="ck">return</span> self.classifier(fused)                          <span class="cc"># → [Marvel, DC]</span></div>
+
+  <div class="rule"></div>
+
+  <div class="section-label">Results</div>
+  <h2 class="sh">Ablation table</h2>
+
+  <div class="ablation-wrap">
+    <div class="ablation-header">Test accuracy — Comic Vine cover + description dataset</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Variant</th>
+          <th>Modality</th>
+          <th>Accuracy</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Image only</td>
+          <td>ResNet-50 cover image</td>
+          <td><span class="pending">— pending</span></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Text only</td>
+          <td>DistilBERT description</td>
+          <td><span class="pending">— pending</span></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Fused</td>
+          <td>Image + text, late fusion</td>
+          <td><span class="pending">— pending</span></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="prose">
+    Hypothesis going in: text is the stronger signal. Cover art has converged aesthetically across publishers; editorial voice and character vocabulary are harder to fake. CoSMo (2025) found visual features dominate macro-structure in panel-level tasks — but cover images are a different regime than interior panels, so the result may not transfer.
+  </p>
+
+  <div class="rule"></div>
+
+  <div class="section-label">Data</div>
+  <h2 class="sh">Comic Vine API</h2>
+
+  <p class="prose">
+    Starting with <strong>cover images + issue descriptions</strong> — no OCR required, freely available, labeled by publisher. Marvel <code>publisher_id = 31</code>, DC <code>publisher_id = 10</code>. Target ~200–400 balanced pairs. Each sample in the manifest: <code>{image_path, text, label, publisher, title}</code>.
+  </p>
+  <p class="prose">
+    Interior pages with OCR are Phase 2, pending CBZ/CBR parsing via <code>zipfile</code> / <code>rarfile</code> and EasyOCR for stylized panel text. Phase 1 intentionally scoped narrow to get a clean baseline first.
+  </p>
+
+  <div class="rule"></div>
+
+  <div class="section-label">Why this is interesting</div>
+
+  <p class="prose">
+    Existing comics ML work focuses almost entirely on <em>within-comic</em> tasks: panel segmentation, speech bubble detection, emotion recognition in scenes. Publisher identity as a learnable institutional signal hasn't been explicitly treated. The closest prior work is CoSMo (ICCV 2025) — structurally adjacent but asking a different question entirely.
+  </p>
+  <p class="prose">
+    The framing here — publisher as <strong>cultural fingerprint</strong>, not just a class label — is the novel angle. If the classifier fails, that's also interesting: it would suggest that whatever makes Marvel feel like Marvel has been obscured by decades of aesthetic convergence between the two publishers.
+  </p>
+
+  <div class="rule"></div>
+
+  <div class="section-label">References</div>
+
+  <ul class="ref-list">
+    <li>
+      <span class="ref-num">[1]</span>
+      Serra et al. <em>CoSMo: Multimodal Comics Scene Segmentation.</em> ICCV 2025. SigLIP + Qwen OCR embeddings, late fusion MLP, 20,800-page dataset. <a href="https://github.com/mserra0/CoSMo-ComicsPSS">github →</a>
+    </li>
+    <li>
+      <span class="ref-num">[2]</span>
+      Augereau et al. <em>Image segmentation, classification and recognition methods for comics: A decade systematic literature review.</em> ScienceDirect, 2023.
+    </li>
+    <li>
+      <span class="ref-num">[3]</span>
+      Yao et al. <em>Multimodal Emotion Recognition on Comics Scenes.</em> ICDAR 2021. Panel-level multimodal classification.
+    </li>
+    <li>
+      <span class="ref-num">[4]</span>
+      Vivoli et al. <em>Multimodal Transformer for Comics Text-Cloze.</em> Domain-adapted ResNet on comic imagery matches larger multimodal LLMs with fewer parameters.
+    </li>
+  </ul>
+
+</main>
+
+<div class="footer-wrap">
+  <footer>
+    <p>Tahreem Karim · <a href="https://www.tahreemkarim.xyz">tahreemkarim.xyz</a></p>
+    <p>tended slowly · <a href="../index.html">← back to garden</a></p>
+  </footer>
+</div>
+
+</body>
+</html>
