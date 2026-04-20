@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Born with it · Tahreem's Garden</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=Lora:ital,wght@0,300;0,400;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #f4ede0;
+      --cream-dark: #ecddd0;
+      --cream-deeper: #e0cdb8;
+      --ink: #2c2416;
+      --ink-mid: #5a4a38;
+      --ink-light: #8a7a6a;
+      --ink-faint: #b8a898;
+      --green: #3d6b4f;
+      --green-mid: #5a8c6e;
+      --green-light: #8ab89a;
+      --green-faint: #c8ddd0;
+      --green-wash: #e8f0eb;
+      --rust: #b85c38;
+      --gold: #c8943a;
+      --rule: #d8cabb;
+      --white: #fdfaf6;
+    }
+
+    html { font-size: 16px; scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: 'Lora', serif;
+      font-weight: 300;
+      line-height: 1.7;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        radial-gradient(ellipse 800px 600px at 10% 20%, rgba(90,140,110,0.07) 0%, transparent 70%),
+        radial-gradient(ellipse 600px 800px at 90% 70%, rgba(200,148,58,0.05) 0%, transparent 70%),
+        radial-gradient(ellipse 500px 400px at 50% 90%, rgba(90,140,110,0.06) 0%, transparent 70%),
+        radial-gradient(ellipse 300px 300px at 80% 10%, rgba(184,92,56,0.04) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(244,237,224,0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--rule);
+      padding: 1rem 0;
+    }
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .nav-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-style: italic;
+      color: var(--green);
+      text-decoration: none;
+      letter-spacing: 0.01em;
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--ink-light);
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.15s;
+    }
+    .nav-links a:hover { color: var(--green); }
+
+    .growth {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .growth-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green-faint); }
+    .growth-dot.sprout { background: var(--green-light); }
+
+    .card-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      background: var(--green-wash);
+      color: var(--green);
+      padding: 0.15rem 0.5rem;
+      border-radius: 1px;
+    }
+    .card-tag.rust { background: #f5ede8; color: var(--rust); }
+    .card-tag.gold { background: #f5f0e0; color: var(--gold); }
+
+    .footer-wrap { position: relative; z-index: 1; margin-top: 4rem; overflow: hidden; }
+    footer {
+      position: relative;
+      z-index: 2;
+      border-top: 1px solid var(--rule);
+      padding: 2rem 2.5rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    footer p {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--ink-faint);
+      letter-spacing: 0.04em;
+    }
+    footer a { color: var(--green); text-decoration: none; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── PAGE ── */
+    .page {
+      position: relative;
+      z-index: 1;
+      max-width: 660px;
+      margin: 0 auto;
+      padding: 4.5rem 2.5rem 8rem;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .breadcrumb {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 3rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .breadcrumb a { color: var(--green); text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+    .breadcrumb-sep { color: var(--rule); }
+
+    .post-header { margin-bottom: 2.5rem; }
+
+    .stage-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 1.25rem;
+    }
+
+    .post-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.75rem;
+      font-weight: 400;
+      line-height: 1.12;
+      letter-spacing: -0.015em;
+      color: var(--ink);
+      margin-bottom: 1rem;
+    }
+    .post-header h1 em { font-style: italic; color: var(--green); }
+
+    .post-lede {
+      font-size: 1rem;
+      font-style: italic;
+      color: var(--ink-mid);
+      line-height: 1.8;
+      border-left: 2px solid var(--green-faint);
+      padding-left: 1.2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .post-meta {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.06em;
+      color: var(--ink-faint);
+      text-transform: uppercase;
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.25rem;
+    }
+
+    .tags-row { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+
+    .rule { height: 1px; background: var(--rule); margin: 2.75rem 0; }
+
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .section-label::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+
+    .prose { font-size: 0.95rem; color: var(--ink-mid); line-height: 1.9; margin-bottom: 1.25rem; }
+    .prose strong { font-weight: 400; color: var(--ink); }
+    .prose em { font-style: italic; }
+
+    .log {
+      margin-top: 3rem;
+      border-top: 1px solid var(--rule);
+      padding-top: 2rem;
+    }
+    .log-entry {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 1.75rem;
+      align-items: baseline;
+    }
+    .log-date {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      flex-shrink: 0;
+      padding-top: 0.2rem;
+      min-width: 80px;
+    }
+    .log-body { font-size: 0.88rem; color: var(--ink-mid); line-height: 1.8; }
+    .log-body strong { font-weight: 400; color: var(--ink); }
+
+    @media (max-width: 700px) {
+      .page { padding: 3rem 1.25rem 5rem; }
+      .post-header h1 { font-size: 2rem; }
+      nav .nav-inner { padding: 0 1.25rem; }
+      .log-entry { flex-direction: column; gap: 0.4rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-name" href="../index.html">Tahreem's Garden</a>
+    <ul class="nav-links">
+      <li><a href="https://www.tahreemkarim.xyz/science">Science</a></li>
+      <li><a href="https://portfolio.tahreemkarim.xyz">Portfolio</a></li>
+      <li><a href="https://www.tahreemkarim.xyz/now">Now</a></li>
+      <li><a href="https://www.tahreemkarim.xyz/free-resources">Resources</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main class="page">
+
+  <div class="breadcrumb">
+    <a href="../index.html">garden</a>
+    <span class="breadcrumb-sep">→</span>
+    <span>seedling</span>
+    <span class="breadcrumb-sep">·</span>
+    <span>reflection</span>
+  </div>
+
+  <header class="post-header">
+    <div class="stage-badge">
+      <span class="growth-dot sprout"></span>
+      Seedling — still turning over
+    </div>
+
+    <h1>Born <em>with</em> it</h1>
+
+    <p class="post-lede">
+      On philosophical inclination — whether it is something you develop or something you arrive with.
+    </p>
+
+    <div class="post-meta">
+      <span>March 2026</span>
+      <span>·</span>
+      <span>Updated April 2026</span>
+    </div>
+
+    <div class="tags-row">
+      <span class="card-tag">reflection</span>
+      <span class="card-tag gold">philosophy</span>
+    </div>
+  </header>
+
+  <div class="rule"></div>
+
+  <!-- NEWEST UPDATE FIRST -->
+  <div class="section-label">April 2026 — Eid</div>
+
+  <p class="prose">
+    Met a Jordanian father-son-grandfather group who immediately offered me sweets from Syria, coffee, and tea. That's typical Arab hospitality, as they put it — and I fervently agreed. As I spoke to the father — an American with Libyan heritage — we ended up talking about the grandfather. Specifically, his proclivity for philosophy. I asked where he thought it came from. He said: probably from his life. The grandfather had been born in Syria, was Libyan, had worked as an engineer for thirty years and was now a high school teacher. Then the father said something that stuck with me — he thought people are just born with it.
+  </p>
+  <p class="prose">
+    I've been thinking about that.
+  </p>
+
+  <div class="rule"></div>
+
+  <!-- ORIGINAL POST -->
+  <div class="section-label">March 2026 — first seedling</div>
+
+  <p class="prose">
+    I didn't realize how common it is to dismiss philosophy as meaningless until I studied it. On the surface it seems abstract, unable to provide obvious tangible contributions to society. Look just a little deeper and the truth becomes obvious.
+  </p>
+  <p class="prose">
+    Philosophy isn't about sitting around and thinking — that sentiment drives me into a veritable rage (a "valid crashout" as the kids say). It is the field that teaches you <em>how</em> to think. No more and no less.
+  </p>
+  <p class="prose">
+    Introductory philosophy courses often warn students that they will start to see the world differently by the end of the class, and to consider another course if that possibility makes them uncomfortable. After enough head-spinning reading material, a person starts to shed conventional modes of thinking and opens their mind to new possibilities. Cue "A Whole New World," read up on Descartes' Method of Doubt, and find the Calvin and Hobbes comic I am too tired to look up right now.
+  </p>
+  <p class="prose">
+    Going to bed.
+  </p>
+
+</main>
+
+<div class="footer-wrap">
+  <footer>
+    <p>Tahreem Karim · <a href="https://www.tahreemkarim.xyz">tahreemkarim.xyz</a></p>
+    <p>tended slowly · <a href="../index.html">← back to garden</a></p>
+  </footer>
+</div>
+
+</body>
+</html>
