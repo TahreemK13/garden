@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Library · Tahreem's Garden</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=Lora:ital,wght@0,300;0,400;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #f4ede0;
+      --cream-dark: #ecddd0;
+      --cream-deeper: #e0cdb8;
+      --ink: #2c2416;
+      --ink-mid: #5a4a38;
+      --ink-light: #8a7a6a;
+      --ink-faint: #b8a898;
+      --green: #3d6b4f;
+      --green-mid: #5a8c6e;
+      --green-light: #8ab89a;
+      --green-faint: #c8ddd0;
+      --green-wash: #e8f0eb;
+      --rust: #b85c38;
+      --gold: #c8943a;
+      --rule: #d8cabb;
+      --white: #fdfaf6;
+    }
+
+    html { font-size: 16px; scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: 'Lora', serif;
+      font-weight: 300;
+      line-height: 1.7;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        radial-gradient(ellipse 800px 600px at 10% 20%, rgba(90,140,110,0.07) 0%, transparent 70%),
+        radial-gradient(ellipse 600px 800px at 90% 70%, rgba(200,148,58,0.05) 0%, transparent 70%),
+        radial-gradient(ellipse 500px 400px at 50% 90%, rgba(90,140,110,0.06) 0%, transparent 70%),
+        radial-gradient(ellipse 300px 300px at 80% 10%, rgba(184,92,56,0.04) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(244,237,224,0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--rule);
+      padding: 1rem 0;
+    }
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .nav-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-style: italic;
+      color: var(--green);
+      text-decoration: none;
+      letter-spacing: 0.01em;
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--ink-light);
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.15s;
+    }
+    .nav-links a:hover { color: var(--green); }
+
+    /* ── FOOTER ── */
+    .footer-wrap { position: relative; z-index: 1; margin-top: 4rem; overflow: hidden; }
+    footer {
+      position: relative;
+      z-index: 2;
+      border-top: 1px solid var(--rule);
+      padding: 2rem 2.5rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    footer p {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--ink-faint);
+      letter-spacing: 0.04em;
+    }
+    footer a { color: var(--green); text-decoration: none; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── PAGE ── */
+    .page {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 4.5rem 2.5rem 8rem;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .breadcrumb {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 3rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .breadcrumb a { color: var(--green); text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+    .breadcrumb-sep { color: var(--rule); }
+
+    /* ── HEADER ── */
+    .lib-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 3rem;
+      padding-bottom: 2.5rem;
+      border-bottom: 1px solid var(--rule);
+    }
+    .lib-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.75rem;
+      font-weight: 400;
+      line-height: 1.12;
+      letter-spacing: -0.015em;
+      color: var(--ink);
+      margin-bottom: 0.75rem;
+    }
+    .lib-header h1 em { font-style: italic; color: var(--green); }
+    .lib-lede {
+      font-size: 0.93rem;
+      font-style: italic;
+      color: var(--ink-mid);
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+    .lib-note {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      color: var(--ink-faint);
+      letter-spacing: 0.04em;
+      line-height: 1.75;
+      border-left: 2px solid var(--green-faint);
+      padding-left: 0.9rem;
+    }
+    .lib-note a { color: var(--green); text-decoration: none; }
+    .lib-note a:hover { text-decoration: underline; }
+
+    /* ── SHELF TABS ── */
+    .shelf-tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--rule);
+      margin-bottom: 2rem;
+    }
+    .shelf-tab {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      padding: 0.65rem 1.25rem;
+      cursor: pointer;
+      border: none;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      background: none;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .shelf-tab:hover { color: var(--ink); }
+    .shelf-tab.active { color: var(--green); border-bottom-color: var(--green); }
+
+    /* ── CONTROLS ROW ── */
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+      flex-wrap: wrap;
+    }
+    .filter-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .control-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+    }
+    .pill {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      background: var(--cream-dark);
+      color: var(--ink-light);
+      padding: 0.2rem 0.6rem;
+      border-radius: 1px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.15s;
+    }
+    .pill:hover { color: var(--ink); border-color: var(--rule); }
+    .pill.active { background: var(--green); color: var(--white); border-color: var(--green); }
+    .pill.rust.active { background: var(--rust); border-color: var(--rust); }
+    .pill.gold.active { background: var(--gold); border-color: var(--gold); }
+    .pill.blue.active { background: #3a5a8c; border-color: #3a5a8c; }
+
+    .sort-group { display: flex; align-items: center; gap: 0.5rem; margin-left: auto; }
+    .sort-btn {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      background: none;
+      border: 1px solid var(--rule);
+      padding: 0.2rem 0.6rem;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .sort-btn:hover { color: var(--ink); border-color: var(--ink-faint); }
+    .sort-btn.active { color: var(--green); border-color: var(--green); }
+
+    .book-count {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.58rem;
+      color: var(--ink-faint);
+      letter-spacing: 0.05em;
+      margin-left: 0.5rem;
+    }
+
+    /* ── GALLERY GRID ── */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 2rem 1.5rem;
+    }
+
+    /* ── BOOK CARD ── */
+    .book-card {
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .book-card.hidden { display: none; }
+
+    .cover-wrap {
+      position: relative;
+      width: 100%;
+      padding-bottom: 148%; /* ~2:3 aspect ratio */
+      background: var(--cream-dark);
+      margin-bottom: 0.9rem;
+      overflow: hidden;
+      box-shadow: 3px 6px 20px rgba(44,36,22,0.12);
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .book-card:hover .cover-wrap {
+      box-shadow: 6px 12px 32px rgba(44,36,22,0.18);
+      transform: translateY(-3px);
+    }
+
+    .cover-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* fallback cover when image fails */
+    .cover-fallback {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      background: linear-gradient(135deg, var(--green-wash) 0%, var(--cream-deeper) 100%);
+      text-align: center;
+    }
+    .cover-fallback .fb-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.75rem;
+      font-style: italic;
+      color: var(--ink-mid);
+      line-height: 1.4;
+      margin-bottom: 0.5rem;
+    }
+    .cover-fallback .fb-author {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.52rem;
+      color: var(--ink-faint);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .card-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.35rem;
+    }
+    .card-year {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.06em;
+      color: var(--ink-faint);
+    }
+    .card-genre {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.52rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 0.1rem 0.4rem;
+      border-radius: 1px;
+    }
+    .card-genre.fiction  { background: var(--green-wash); color: var(--green); }
+    .card-genre.comics   { background: #f5ede8; color: var(--rust); }
+    .card-genre.science  { background: #f5f0e0; color: var(--gold); }
+    .card-genre.nonfiction { background: #e8eef5; color: #3a5a8c; }
+
+    .card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.88rem;
+      font-weight: 400;
+      line-height: 1.3;
+      color: var(--ink);
+      margin-bottom: 0.2rem;
+    }
+    .card-author {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.55rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 0.5rem;
+    }
+
+    /* ── EXPANDED DRAWER ── */
+    .drawer-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(44,36,22,0.4);
+      z-index: 200;
+      backdrop-filter: blur(4px);
+    }
+    .drawer-overlay.open { display: block; }
+
+    .drawer {
+      position: fixed;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: min(480px, 90vw);
+      background: var(--white);
+      z-index: 201;
+      overflow-y: auto;
+      transform: translateX(100%);
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border-left: 1px solid var(--rule);
+      padding: 2.5rem;
+    }
+    .drawer.open { transform: translateX(0); }
+
+    .drawer-close {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: color 0.15s;
+    }
+    .drawer-close:hover { color: var(--ink); }
+
+    .drawer-cover {
+      width: 120px;
+      height: auto;
+      display: block;
+      margin-bottom: 1.5rem;
+      box-shadow: 3px 6px 20px rgba(44,36,22,0.15);
+    }
+
+    .drawer-year {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 0.5rem;
+    }
+
+    .drawer-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-weight: 400;
+      line-height: 1.25;
+      color: var(--ink);
+      margin-bottom: 0.4rem;
+    }
+    .drawer-author {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 1.5rem;
+    }
+    .drawer-note {
+      font-size: 0.9rem;
+      color: var(--ink-mid);
+      line-height: 1.85;
+      margin-bottom: 1.5rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--rule);
+    }
+    .drawer-link {
+      display: inline-block;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--green);
+      text-decoration: none;
+      border-bottom: 1px solid var(--green-faint);
+      padding-bottom: 0.1rem;
+      transition: border-color 0.15s;
+    }
+    .drawer-link:hover { border-color: var(--green); }
+
+    /* ── ANTILIBRARY ── */
+    .anti-shelf { display: none; }
+    .anti-shelf.visible { display: block; }
+    .read-shelf.hidden-shelf { display: none; }
+
+    .anti-lede {
+      font-size: 0.9rem;
+      font-style: italic;
+      color: var(--ink-light);
+      line-height: 1.8;
+      border-left: 2px solid var(--cream-deeper);
+      padding-left: 1rem;
+      margin-bottom: 2.5rem;
+      max-width: 560px;
+    }
+
+    .anti-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1.25rem;
+    }
+    .anti-card {
+      background: var(--white);
+      border: 1px solid var(--rule);
+      padding: 1.2rem;
+      opacity: 0.7;
+    }
+    .anti-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.9rem;
+      font-style: italic;
+      color: var(--ink-light);
+      margin-bottom: 0.3rem;
+      line-height: 1.35;
+    }
+    .anti-author {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.55rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 0.6rem;
+    }
+    .anti-why {
+      font-size: 0.78rem;
+      color: var(--ink-faint);
+      font-style: italic;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 700px) {
+      .page { padding: 3rem 1.25rem 5rem; }
+      .lib-header { grid-template-columns: 1fr; gap: 1.5rem; }
+      .lib-header h1 { font-size: 2rem; }
+      nav .nav-inner { padding: 0 1.25rem; }
+      .gallery { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1.5rem 1rem; }
+      .controls { gap: 0.75rem; }
+      .sort-group { margin-left: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-name" href="index.html">Tahreem's Garden</a>
+    <ul class="nav-links">
+      <li><a href="https://www.tahreemkarim.xyz/science">Science</a></li>
+      <li><a href="https://portfolio.tahreemkarim.xyz">Portfolio</a></li>
+      <li><a href="https://www.tahreemkarim.xyz/now">Now</a></li>
+      <li><a href="https://www.tahreemkarim.xyz/free-resources">Resources</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main class="page">
+
+  <div class="breadcrumb">
+    <a href="index.html">garden</a>
+    <span class="breadcrumb-sep">→</span>
+    <span>library</span>
+  </div>
+
+  <header class="lib-header">
+    <div>
+      <h1>The <em>library</em></h1>
+      <p class="lib-lede">Books I have read and books I intend to read. Ordered by when they passed through my hands.</p>
+    </div>
+    <div>
+      <p class="lib-note">
+        Links go to independent bookstores and mission-aligned sites —
+        <a href="https://greenapplebooks.com" target="_blank">Green Apple Books</a> (SF),
+        <a href="https://noevalleybooks.com" target="_blank">Noe Valley Books</a> (SF),
+        <a href="https://dakotacomics.com" target="_blank">Dakota Comics</a> (SD),
+        and ResearchGate where applicable.
+        Buy local when you can. ♥
+      </p>
+    </div>
+  </header>
+
+  <!-- SHELF TABS -->
+  <div class="shelf-tabs">
+    <button class="shelf-tab active" onclick="showShelf('read')">Read</button>
+    <button class="shelf-tab" onclick="showShelf('anti')">Antilibrary</button>
+  </div>
+
+  <!-- READ SHELF -->
+  <div class="read-shelf" id="read-shelf">
+
+    <div class="controls" id="controls">
+      <div class="filter-group">
+        <span class="control-label">genre</span>
+        <span class="pill active" data-filter="all" onclick="filterBooks('all', this)">All</span>
+        <span class="pill" data-filter="fiction" onclick="filterBooks('fiction', this)">Fiction</span>
+        <span class="pill rust" data-filter="comics" onclick="filterBooks('comics', this)">Comics</span>
+        <span class="pill gold" data-filter="science" onclick="filterBooks('science', this)">Science</span>
+        <span class="pill blue" data-filter="nonfiction" onclick="filterBooks('nonfiction', this)">Nonfiction</span>
+      </div>
+      <div class="sort-group">
+        <span class="control-label">sort</span>
+        <button class="sort-btn active" onclick="sortBooks('desc', this)">Newest</button>
+        <button class="sort-btn" onclick="sortBooks('asc', this)">Oldest</button>
+        <span class="book-count" id="book-count">10 books</span>
+      </div>
+    </div>
+
+    <div class="gallery" id="gallery">
+
+      <!-- each card: data-year for sorting, data-genre for filtering -->
+
+      <div class="book-card" data-year="2026" data-genre="fiction"
+           onclick="openDrawer('Three Bags Full', 'Leonie Swann · tr. Anthea Bell', '2026',
+           'https://covers.openlibrary.org/b/isbn/9781641296823-L.jpg',
+           'https://greenapplebooks.com/book/9781641296823', 'Green Apple Books',
+           'fiction',
+           '[ Your note here — what drew you to it, what stayed with you. ]')">
+        <div class="cover-wrap">
+          <img class="cover-img" src="https://covers.openlibrary.org/b/isbn/9781641296823-M.jpg"
+               alt="Three Bags Full" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">
+          <div class="cover-fallback" style="display:none">
+            <div class="fb-title">Three Bags Full</div>
+            <div class="fb-author">Leonie Swann</div>
+          </div>
+        </div>
+        <div class="card-meta">
+          <span class="card-year">2026</span>
+          <span class="card-genre fiction">fiction</span>
+        </div>
+        <div class="card-title">Three Bags Full</div>
+        <div class="card-author">Leonie Swann</div>
+      </div>
+
+      <div class="book-card" data-year="20251001" data-genre="comics"
+           onclick="openDrawer('Absolute Carnage', 'Donny Cates · Marvel Comics', 'Oct 2025',
+           'https://covers.openlibrary.org/b/isbn/9781302919085-L.jpg',
+           'https://noevalleybooks.com/book/9781302919085', 'Noe Valley Books',
+           'comics',
+           '[ Your note here. ]')">
+        <div class="cover-wrap">
+          <img class="cover-img" src="https://covers.openlibrary.org/b/isbn/9781302919085-M.jpg"
+               alt="Absolute Carnage" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">
+          <div class="cover-fallback" style="display:none">
+            <div class="fb-title">Absolute Carnage</div>
+            <div class="fb-author">Donny Cates</div>
+          </div>
+        </div>
+        <div class="card-meta">
+          <span class="card-year">Oct 2025</span>
+          <span class="card-genre comics">comics</span>
+        </div>
+        <div class="card-title">Absolute Carnage</div>
+        <div class="card-author">Donny Cates</div>
+      </div>
+
+      <div class="book-card" data-year="20250600" data-genre="science"
+           onclick="openDrawer('Life at the Speed of Light', 'J. Craig Venter', '2025',
+           'https://covers.openlibrary.org/b/isbn/9781476754727-L.jpg',
+           'https://www.researchgate.net/publication/264625802_Life_at_the_Speed_of_Light_From_the_Double_Helix_to_the_Dawn_of_Digital_Life_By_J_Craig_Venter', 'ResearchGate',
+           'science',
+           '[ Your note here. ]')">
+        <div class="cover-wrap">
+          <img class="cover-img" src="https://covers.openlibrary.org/b/isbn/9781476754727-M.jpg"
+               alt="Life at the Speed of Light" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">
+          <div class="cover-fallback" style="display:none">
+            <div class="fb-title">Life at the Speed of Light</div>
+            <div class="fb-author">J. Craig Venter</div>
+          </div>
+        </div>
+        <div class="card-meta">
+          <span class="card-year">2025</span>
+          <span class="card-genre science">science</span>
+        </div>
+        <div class="card-title">Life at the Speed of Light</div>
+        <div class="card-author">J. Craig Venter</div>
+      </div>
+
+      <div class="book-card" data-year="20250300" data-genre="fiction comics"
+           onclick="openDrawer('Breaking the Dark', 'Lisa Jewell', '2025',
+           'https://covers.openlibrary.org/b/isbn/9781368090124-L.jpg',
+           'https://greenapplebooks.com/book/9781368090124', 'Green Apple Books',
+           'comics',
+           '[ Your note here. ]')">
+        <div class="cover-wrap">
+          <img class="cover-img" src="https://covers.openlibrary.org/b/isbn/9781368090124-M.jpg"
+               alt="Breaking the Dark" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">
+          <div class="cover-fallback" style="display:none">
+            <div class="fb-title">Breaking the Dark</div>
+            <div class="fb-author">Lisa Jewell</div>
+          </div>
+        </div>
+        <div class="card-meta">
+          <span class="card-year">2025</span>
+          <span class="card-genre comics">comics</span>
+        </div>
+        <div class="card-title">Breaking the Dark</div>
+        <div class="card-author">Lisa Jewell</div>
+      </div>
+
+      <div class="book-card" data-year="2024" data-genre="fiction"
+           onclick="openDrawer('Murder Your Employer', 'Rupert Holmes', '2024',
+           'https://covers.openlibrary.org/b/isbn/9781451648225-L.jpg',
+           'https://greenapplebooks.com/book/9781451648225', 'Green Apple Books',
+           'fiction',
+           '[ Your note here. ]')">
+        <div class="cover-wrap">
+          <img class="cover-img" src="https://covers.openlibrary.org/b/isbn/9781451648225-M.jpg"
+               alt="Murder Your Employer" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">
+          <div class="cover-fallback" style="display:none">
+            <div class="fb-title">Murder Your Employer</div>
+            <div class="fb-author">Rupert Holmes</div>
+          </div>
+        </div>
+        <div class="card-meta">
+          <span class="card-year">2024</span>
+          <span class="card-genre fiction">fiction</span>
+        </div>
+        <div class="card-title">Murder Your Employer</div>
+        <div class="card-author">Rupert Holmes</div>
+      </div>
+
+      <div class="book-card" data-year="2022" data-genre="fiction"
+           onclick="openDrawer('Transcendent Kingdom', 'Yaa Gyasi', '2022',
+           'https://covers.openlibrary.org/b/isbn/9781984899767-L.jpg',
+           'https://greenapplebooks.com/book/9781984899767', 'Green Apple Books',
+           'fiction',
+           '[ Your note here. ]')">
+        <div class="cover-wrap">
+          <img class="cover-img" src="https://covers.openlibrary.org/b/isbn/9781984899767-M.jpg"
+               alt="Transcendent Kingdom" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">
+          <div class="cover-fallback" style="display:none">
+            <div class="fb-title">Transcendent Kingdom</div>
+            <div class="fb-author">Yaa Gyasi</div>
+          </div>
+        </div>
+        <div class="card-meta">
+          <span class="card-year">2022</span>
+          <span class="card-genre fiction">fiction</span>
+        </div>
+        <div class="card-title">Transcendent Kingdom</div>
+        <div class="card-author">Yaa Gyasi</div>
+      </div>
+
+      <div class="book-card" data-year="20200600" data-genre="nonfiction"
+           onclick="openDrawer('The Autobiography of Malcolm X', 'Malcolm X · as told to Alex Haley', '2020',
+           'https://covers.openlibrary.org/b/isbn/9780345350688-L.jpg',
+           'https://greenapplebooks.com/book/9780345350688', 'Green Apple Books',
+           'nonfiction',
+           '[ Your note here. ]')">
+        <div class="cover-wrap">
+          <img class="cover-img" src="https://covers.openlibrary.org/b/isbn/9780345350688-M.jpg"
+               alt="The Autobiography of Malcolm X" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">
+          <div class="cover-fallback" style="display:none">
+            <div class="fb-title">The Autobiography of Malcolm X</div>
+            <div class="fb-author">Malcolm X</div>
+          </div>
+        </div>
+        <div class="card-meta">
+          <span class="card-year">2020</span>
+          <span class="card-genre nonfiction">nonfiction</span>
+        </div>
+        <div class="card-title">The Autobiography of Malcolm X</div>
+        <div class="card-author">Malcolm X · Alex Haley</div>
+      </div>
+
+      <div class="book-card" data-year="20200300" data-genre="comics"
+           onclick="openDrawer('Deadpool by Kelly Thompson', 'Kelly Thompson · Marvel Comics', '2020',
+           'https://covers.openlibrary.org/b/isbn/9781302919085-L.jpg',
+           'https://dakotacomics.com/products/pid0000041124', 'Dakota Comics',
+           'comics',
+           '[ Your note here. ]')">
+        <div class="cover-wrap">
+          <img class="cover-img" src="https://covers.openlibrary.org/b/isbn/9780785197942-M.jpg"
+               alt="Deadpool by Kelly Thompson" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">
+          <div class="cover-fallback" style="display:none">
+            <div class="fb-title">Deadpool by Kelly Thompson</div>
+            <div class="fb-author">Kelly Thompson</div>
+          </div>
+        </div>
+        <div class="card-meta">
+          <span class="card-year">2020</span>
+          <span class="card-genre comics">comics</span>
+        </div>
+        <div class="card-title">Deadpool by Kelly Thompson</div>
+        <div class="card-author">Kelly Thompson</div>
+      </div>
+
+      <div class="book-card" data-year="2014" data-genre="fiction"
+           onclick="openDrawer('The 100-Year-Old Man Who Climbed Out the Window and Disappeared', 'Jonas Jonasson', '2014',
+           'https://covers.openlibrary.org/b/isbn/9781401324643-L.jpg',
+           'https://greenapplebooks.com/book/9781401324643', 'Green Apple Books',
+           'fiction',
+           '[ Your note here. ]')">
+        <div class="cover-wrap">
+          <img class="cover-img" src="https://covers.openlibrary.org/b/isbn/9781401324643-M.jpg"
+               alt="The 100-Year-Old Man" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">
+          <div class="cover-fallback" style="display:none">
+            <div class="fb-title">The 100-Year-Old Man Who Climbed Out the Window</div>
+            <div class="fb-author">Jonas Jonasson</div>
+          </div>
+        </div>
+        <div class="card-meta">
+          <span class="card-year">2014</span>
+          <span class="card-genre fiction">fiction</span>
+        </div>
+        <div class="card-title">The 100-Year-Old Man Who Climbed Out the Window and Disappeared</div>
+        <div class="card-author">Jonas Jonasson</div>
+      </div>
+
+      <div class="book-card" data-year="2012" data-genre="fiction"
+           onclick="openDrawer('A Visit from the Goon Squad', 'Jennifer Egan', '2012',
+           'https://covers.openlibrary.org/b/isbn/9780307477477-L.jpg',
+           'https://greenapplebooks.com/book/9780307477477', 'Green Apple Books',
+           'fiction',
+           '[ Your note here. ]')">
+        <div class="cover-wrap">
+          <img class="cover-img" src="https://covers.openlibrary.org/b/isbn/9780307477477-M.jpg"
+               alt="A Visit from the Goon Squad" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">
+          <div class="cover-fallback" style="display:none">
+            <div class="fb-title">A Visit from the Goon Squad</div>
+            <div class="fb-author">Jennifer Egan</div>
+          </div>
+        </div>
+        <div class="card-meta">
+          <span class="card-year">2012</span>
+          <span class="card-genre fiction">fiction</span>
+        </div>
+        <div class="card-title">A Visit from the Goon Squad</div>
+        <div class="card-author">Jennifer Egan</div>
+      </div>
+
+    </div><!-- /gallery -->
+  </div><!-- /read-shelf -->
+
+  <!-- ANTILIBRARY -->
+  <div class="anti-shelf" id="anti-shelf">
+    <p class="anti-lede">Books I mean to read — kept here so they don't evaporate into a forgotten list somewhere. The antilibrary grows faster than the library. That feels right.</p>
+    <div class="anti-grid">
+      <div class="anti-card">
+        <div class="anti-title">[ title ]</div>
+        <div class="anti-author">[ author ]</div>
+        <div class="anti-why">[ why it's on the list ]</div>
+      </div>
+      <div class="anti-card">
+        <div class="anti-title">[ title ]</div>
+        <div class="anti-author">[ author ]</div>
+        <div class="anti-why">[ why it's on the list ]</div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- DRAWER OVERLAY -->
+<div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
+
+<!-- DRAWER -->
+<div class="drawer" id="drawer">
+  <button class="drawer-close" onclick="closeDrawer()">← close</button>
+  <img class="drawer-cover" id="drawer-cover" src="" alt="">
+  <div class="drawer-year" id="drawer-year"></div>
+  <div class="drawer-title" id="drawer-title"></div>
+  <div class="drawer-author" id="drawer-author"></div>
+  <div class="drawer-note" id="drawer-note"></div>
+  <a class="drawer-link" id="drawer-link" href="" target="_blank"></a>
+</div>
+
+<div class="footer-wrap">
+  <footer>
+    <p>Tahreem Karim · <a href="https://www.tahreemkarim.xyz">tahreemkarim.xyz</a></p>
+    <p>tended slowly · <a href="index.html">← back to garden</a></p>
+  </footer>
+</div>
+
+<script>
+  // ── DRAWER ──
+  function openDrawer(title, author, year, coverUrl, linkUrl, linkLabel, genre, note) {
+    document.getElementById('drawer-title').textContent = title;
+    document.getElementById('drawer-author').textContent = author;
+    document.getElementById('drawer-year').textContent = year;
+    document.getElementById('drawer-note').textContent = note;
+    document.getElementById('drawer-cover').src = coverUrl;
+    document.getElementById('drawer-cover').alt = title;
+    const link = document.getElementById('drawer-link');
+    link.href = linkUrl;
+    link.textContent = linkLabel + ' →';
+    document.getElementById('drawer-overlay').classList.add('open');
+    document.getElementById('drawer').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeDrawer() {
+    document.getElementById('drawer-overlay').classList.remove('open');
+    document.getElementById('drawer').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
+
+  // ── FILTER ──
+  let currentFilter = 'all';
+  let currentSort = 'desc';
+
+  function filterBooks(tag, el) {
+    currentFilter = tag;
+    document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+    el.classList.add('active');
+    applyFilterSort();
+  }
+
+  // ── SORT ──
+  function sortBooks(dir, el) {
+    currentSort = dir;
+    document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+    applyFilterSort();
+  }
+
+  function applyFilterSort() {
+    const gallery = document.getElementById('gallery');
+    const cards = Array.from(gallery.querySelectorAll('.book-card'));
+
+    // filter visibility
+    cards.forEach(card => {
+      const genre = card.dataset.genre || '';
+      const show = currentFilter === 'all' || genre.includes(currentFilter);
+      card.classList.toggle('hidden', !show);
+    });
+
+    // sort visible cards
+    const visible = cards.filter(c => !c.classList.contains('hidden'));
+    visible.sort((a, b) => {
+      const ya = parseInt(a.dataset.year);
+      const yb = parseInt(b.dataset.year);
+      return currentSort === 'desc' ? yb - ya : ya - yb;
+    });
+
+    // re-append in sorted order (hidden cards stay at end)
+    const hidden = cards.filter(c => c.classList.contains('hidden'));
+    [...visible, ...hidden].forEach(c => gallery.appendChild(c));
+
+    // update count
+    document.getElementById('book-count').textContent = visible.length + ' book' + (visible.length !== 1 ? 's' : '');
+  }
+
+  // ── SHELF TOGGLE ──
+  function showShelf(shelf) {
+    const readShelf = document.getElementById('read-shelf');
+    const antiShelf = document.getElementById('anti-shelf');
+    const tabs = document.querySelectorAll('.shelf-tab');
+    tabs.forEach(t => t.classList.remove('active'));
+
+    if (shelf === 'read') {
+      tabs[0].classList.add('active');
+      readShelf.classList.remove('hidden-shelf');
+      antiShelf.classList.remove('visible');
+    } else {
+      tabs[1].classList.add('active');
+      readShelf.classList.add('hidden-shelf');
+      antiShelf.classList.add('visible');
+    }
+  }
+</script>
+
+</body>
+</html>
