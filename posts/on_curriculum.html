@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>An online curriculum · Tahreem's Garden</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=Lora:ital,wght@0,300;0,400;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --cream: #f4ede0;
+  --cream-dark: #ecddd0;
+  --cream-deeper: #e0cdb8;
+  --ink: #2c2416;
+  --ink-mid: #5a4a38;
+  --ink-light: #8a7a6a;
+  --ink-faint: #b8a898;
+  --green: #3d6b4f;
+  --green-mid: #5a8c6e;
+  --green-light: #8ab89a;
+  --green-faint: #c8ddd0;
+  --green-wash: #e8f0eb;
+  --rust: #b85c38;
+  --gold: #c8943a;
+  --rule: #d8cabb;
+  --white: #fdfaf6;
+}
+html { font-size: 16px; scroll-behavior: smooth; }
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: 'Lora', serif;
+  font-weight: 300;
+  line-height: 1.7;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(ellipse 800px 600px at 10% 20%, rgba(90,140,110,0.07) 0%, transparent 70%),
+    radial-gradient(ellipse 600px 800px at 90% 70%, rgba(200,148,58,0.05) 0%, transparent 70%),
+    radial-gradient(ellipse 500px 400px at 50% 90%, rgba(90,140,110,0.06) 0%, transparent 70%),
+    radial-gradient(ellipse 300px 300px at 80% 10%, rgba(184,92,56,0.04) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.4;
+}
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(244,237,224,0.88);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--rule);
+  padding: 1rem 0;
+}
+.nav-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 2.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.nav-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  font-style: italic;
+  color: var(--green);
+  text-decoration: none;
+  letter-spacing: 0.01em;
+}
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--ink-light);
+  text-decoration: none;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: color 0.15s;
+}
+.nav-links a:hover { color: var(--green); }
+.growth-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green-faint); display: inline-block; }
+.card-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  background: var(--green-wash);
+  color: var(--green);
+  padding: 0.15rem 0.5rem;
+  border-radius: 1px;
+}
+.footer-wrap { position: relative; z-index: 1; margin-top: 4rem; overflow: hidden; }
+footer {
+  position: relative;
+  z-index: 2;
+  border-top: 1px solid var(--rule);
+  padding: 2rem 2.5rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+footer p { font-family: 'DM Mono', monospace; font-size: 0.68rem; color: var(--ink-faint); letter-spacing: 0.04em; }
+footer a { color: var(--green); text-decoration: none; }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.page {
+  position: relative;
+  z-index: 1;
+  max-width: 660px;
+  margin: 0 auto;
+  padding: 4.5rem 2.5rem 8rem;
+  animation: fadeUp 0.6s ease both;
+}
+.breadcrumb {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 3rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.breadcrumb a { color: var(--green); text-decoration: none; }
+.breadcrumb a:hover { text-decoration: underline; }
+.breadcrumb-sep { color: var(--rule); }
+.post-header { margin-bottom: 2.5rem; }
+.stage-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 1.25rem;
+}
+.post-header h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.75rem;
+  font-weight: 400;
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  margin-bottom: 1rem;
+}
+.post-header h1 em { font-style: italic; color: var(--green); }
+.post-lede {
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--ink-mid);
+  line-height: 1.8;
+  border-left: 2px solid var(--green-faint);
+  padding-left: 1.2rem;
+  margin-bottom: 1.5rem;
+}
+.post-meta {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+}
+.tags-row { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.rule { height: 1px; background: var(--rule); margin: 2.75rem 0; }
+.section-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.section-label::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+.prose { font-size: 0.95rem; color: var(--ink-mid); line-height: 1.9; margin-bottom: 1.25rem; }
+
+/* ── CHECKLIST ── */
+.checklist { list-style: none; margin: 0; padding: 0; }
+.checklist li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid var(--cream-deeper);
+}
+.checklist li:first-child { border-top: 1px solid var(--cream-deeper); }
+
+/* TO MARK DONE: add class="done" to the <li> */
+.checklist li.done { opacity: 0.45; }
+.checklist li.done .course-name { text-decoration: line-through; }
+
+.check-box {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  border: 1.5px solid var(--green-faint);
+  border-radius: 2px;
+  margin-top: 4px;
+  position: relative;
+  background: transparent;
+}
+.done .check-box { background: var(--green-faint); border-color: var(--green-light); }
+.done .check-box::after {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: -1px;
+  width: 4px;
+  height: 8px;
+  border: 1.5px solid var(--green);
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg);
+}
+.course-info { flex: 1; min-width: 0; }
+.course-name { font-size: 0.88rem; color: var(--ink-mid); line-height: 1.5; }
+.course-name a {
+  color: var(--ink-mid);
+  text-decoration: none;
+  border-bottom: 1px solid var(--cream-deeper);
+  transition: color 0.15s, border-color 0.15s;
+}
+.course-name a:hover { color: var(--green); border-color: var(--green-faint); }
+.course-inst {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-top: 0.15rem;
+}
+/* cert link: hidden by default. show by adding class="has-cert" and a real href */
+.cert-link { display: none; font-family: 'DM Mono', monospace; font-size: 0.58rem; letter-spacing: 0.04em; color: var(--green); text-decoration: none; flex-shrink: 0; white-space: nowrap; }
+.done .cert-link.has-cert { display: inline; }
+.cert-link::before { content: '↗ '; }
+
+/* ── COMPLETED SECTION ── */
+.completed-section { margin-top: 2.5rem; }
+.completed-header {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.completed-header::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+.completed-header .count { font-size: 0.58rem; background: var(--green-wash); color: var(--green); padding: 0.1rem 0.45rem; border-radius: 999px; }
+.completed-list { list-style: none; padding: 0; margin: 0; }
+.completed-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 0.45rem 0;
+  border-bottom: 1px solid var(--cream-deeper);
+  gap: 1rem;
+}
+.completed-list li:first-child { border-top: 1px solid var(--cream-deeper); }
+.completed-name { font-size: 0.85rem; color: var(--ink-light); line-height: 1.4; flex: 1; }
+.completed-cert { font-family: 'DM Mono', monospace; font-size: 0.58rem; letter-spacing: 0.04em; color: var(--green); text-decoration: none; white-space: nowrap; }
+.completed-cert::before { content: '↗ '; }
+
+@media (max-width: 700px) {
+  .page { padding: 3rem 1.25rem 5rem; }
+  .post-header h1 { font-size: 2rem; }
+  nav .nav-inner { padding: 0 1.25rem; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-name" href="../index.html">Tahreem's Garden</a>
+    <ul class="nav-links">
+      <li><a href="https://www.tahreemkarim.xyz/science">Science</a></li>
+      <li><a href="https://portfolio.tahreemkarim.xyz">Portfolio</a></li>
+      <li><a href="https://www.tahreemkarim.xyz/now">Now</a></li>
+      <li><a href="https://www.tahreemkarim.xyz/free-resources">Resources</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main class="page">
+  <div class="breadcrumb">
+    <a href="../index.html">garden</a>
+    <span class="breadcrumb-sep">→</span>
+    <span>seed</span>
+    <span class="breadcrumb-sep">·</span>
+    <span>bioinformatics</span>
+  </div>
+
+  <header class="post-header">
+    <div class="stage-badge">
+      <span class="growth-dot"></span>
+      Seed — germinating slowly
+    </div>
+    <h1>An <em>online</em> curriculum</h1>
+    <p class="post-lede">
+      Coursera stopped letting you save courses. So I'm keeping the list here, where I can actually find it and check things off.
+    </p>
+    <div class="post-meta">
+      <span>March 2026</span>
+    </div>
+    <div class="tags-row">
+      <span class="card-tag">bioinformatics</span>
+    </div>
+  </header>
+
+  <div class="rule"></div>
+
+  <div class="section-label">March 2026 — highest priority first</div>
+
+  <p class="prose">
+    Coursera doesn't let you save courses anymore, what a joke. Everything below is ordered by how urgently I want to get to it.
+  </p>
+
+  <!--
+  ════════════════════════════════════════════════════════
+  HOW TO UPDATE THIS LIST WHEN YOU FINISH A COURSE
+  ════════════════════════════════════════════════════════
+
+  1. MARK DONE — add class="done" to the <li>:
+       <li class="done">
+
+  2. ADD CERTIFICATE — on the <a class="cert-link">,
+     add "has-cert" to the class and set the real href:
+       <a class="cert-link has-cert" href="https://coursera.org/verify/XXXX" target="_blank">certificate</a>
+
+  3. ADD TO COMPLETED LIST — scroll down to the completed-list
+     and add an <li> there with the course name and cert link.
+
+  4. UPDATE THE COUNT — change the number in <span class="count">0</span>
+     at the bottom to reflect how many you've finished.
+  ════════════════════════════════════════════════════════
+  -->
+
+  <ul class="checklist">
+
+    <li>
+      <span class="check-box"></span>
+      <span class="course-info">
+        <span class="course-name"><a href="https://www.coursera.org/specializations/jhu-data-visualization-dashboarding-with-r" target="_blank">Data Visualization &amp; Dashboarding with R Specialization</a></span>
+        <span class="course-inst">Johns Hopkins University</span>
+      </span>
+      <a class="cert-link" href="#" target="_blank">certificate</a>
+    </li>
+
+    <li>
+      <span class="check-box"></span>
+      <span class="course-info">
+        <span class="course-name"><a href="https://www.coursera.org/specializations/c-programming" target="_blank">Introductory C Programming Specialization</a></span>
+        <span class="course-inst">Duke University</span>
+      </span>
+      <a class="cert-link" href="#" target="_blank">certificate</a>
+    </li>
+
+    <li>
+      <span class="check-box"></span>
+      <span class="course-info">
+        <span class="course-name"><a href="https://www.coursera.org/specializations/genomic-data-science" target="_blank">Genomic Data Science Specialization</a></span>
+        <span class="course-inst">Johns Hopkins University</span>
+      </span>
+      <a class="cert-link" href="#" target="_blank">certificate</a>
+    </li>
+
+    <li>
+      <span class="check-box"></span>
+      <span class="course-info">
+        <span class="course-name"><a href="https://www.coursera.org/learn/dynamical-modeling" target="_blank">Dynamical Modeling Methods for Systems Biology</a></span>
+        <span class="course-inst">Icahn School of Medicine at Mount Sinai</span>
+      </span>
+      <a class="cert-link" href="#" target="_blank">certificate</a>
+    </li>
+
+    <li>
+      <span class="check-box"></span>
+      <span class="course-info">
+        <span class="course-name"><a href="https://www.coursera.org/projects/access-bioinformatics-databases-with-biopython" target="_blank">Access Bioinformatics Databases with Biopython</a></span>
+        <span class="course-inst">Coursera Project</span>
+      </span>
+      <a class="cert-link" href="#" target="_blank">certificate</a>
+    </li>
+
+    <li>
+      <span class="check-box"></span>
+      <span class="course-info">
+        <span class="course-name"><a href="https://www.coursera.org/specializations/biostatistics-public-health" target="_blank">Biostatistics in Public Health Specialization</a></span>
+        <span class="course-inst">Johns Hopkins University</span>
+      </span>
+      <a class="cert-link" href="#" target="_blank">certificate</a>
+    </li>
+
+    <li>
+      <span class="check-box"></span>
+      <span class="course-info">
+        <span class="course-name"><a href="https://www.coursera.org/specializations/health-informatics" target="_blank">Health Informatics Specialization</a></span>
+        <span class="course-inst">Johns Hopkins University</span>
+      </span>
+      <a class="cert-link" href="#" target="_blank">certificate</a>
+    </li>
+
+    <li>
+      <span class="check-box"></span>
+      <span class="course-info">
+        <span class="course-name"><a href="https://www.coursera.org/learn/clinical-trials-data-collection-management-quality-assurance" target="_blank">Clinical Trials Data Management and Quality Assurance</a></span>
+        <span class="course-inst">Johns Hopkins University</span>
+      </span>
+      <a class="cert-link" href="#" target="_blank">certificate</a>
+    </li>
+
+    <li>
+      <span class="check-box"></span>
+      <span class="course-info">
+        <span class="course-name"><a href="https://www.coursera.org/specializations/engineering-genetic-circuits" target="_blank">Engineering Genetic Circuits Specialization</a></span>
+        <span class="course-inst">University of Colorado Boulder</span>
+      </span>
+      <a class="cert-link" href="#" target="_blank">certificate</a>
+    </li>
+
+    <li>
+      <span class="check-box"></span>
+      <span class="course-info">
+        <span class="course-name"><a href="https://www.coursera.org/learn/bioinformatics-methods-for-transcriptomics" target="_blank">Bioinformatics Methods for Transcriptomics</a></span>
+        <span class="course-inst">Johns Hopkins University</span>
+      </span>
+      <a class="cert-link" href="#" target="_blank">certificate</a>
+    </li>
+
+    <li>
+      <span class="check-box"></span>
+      <span class="course-info">
+        <span class="course-name"><a href="https://www.coursera.org/specializations/infectious-disease-modelling" target="_blank">Infectious Disease Modelling Specialization</a></span>
+        <span class="course-inst">Imperial College London</span>
+      </span>
+      <a class="cert-link" href="#" target="_blank">certificate</a>
+    </li>
+
+    <li>
+      <span class="check-box"></span>
+      <span class="course-info">
+        <span class="course-name"><a href="https://www.coursera.org/learn/informatics" target="_blank">Bacterial Bioinformatics</a></span>
+        <span class="course-inst">University of Virginia</span>
+      </span>
+      <a class="cert-link" href="#" target="_blank">certificate</a>
+    </li>
+
+  </ul>
+
+  <!--
+  ════════════════════════════════════════════════════════
+  COMPLETED SECTION — add finished courses here manually.
+
+  With certificate:
+    <li>
+      <span class="completed-name">Genomic Data Science Specialization · Johns Hopkins</span>
+      <a class="completed-cert" href="https://coursera.org/verify/XXXX" target="_blank">certificate</a>
+    </li>
+
+  Without certificate:
+    <li>
+      <span class="completed-name">Bacterial Bioinformatics · University of Virginia</span>
+    </li>
+
+  Also update the count number below.
+  ════════════════════════════════════════════════════════
+  -->
+
+  <div class="completed-section">
+    <div class="completed-header">
+      Completed <span class="count">0</span>
+    </div>
+    <ul class="completed-list">
+      <!-- completed courses go here -->
+    </ul>
+  </div>
+
+</main>
+
+<div class="footer-wrap">
+  <footer>
+    <p>Tahreem Karim · <a href="https://www.tahreemkarim.xyz">tahreemkarim.xyz</a></p>
+    <p>tended slowly · <a href="../index.html">← back to garden</a></p>
+  </footer>
+</div>
+
+</body>
+</html>
