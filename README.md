@@ -1,7 +1,5 @@
 # Garden
 
-# garden
-
 > A digital garden — part notebook, part library, part creative studio.  
 > Live at [garden.tahreemkarim.xyz](https://garden.tahreemkarim.xyz)
 
@@ -9,9 +7,9 @@
 
 ## What is this?
 
-This is the source for Tahreem Karim's digital garden: a personal corner of the internet that sits somewhere between a blog, a commonplace book, and a portfolio annex. It is intentionally slow, loosely structured, and always in progress.
+This is the source for Tahreem Karim's digital garden: a personal corner of the internet that sits somewhere between a blog, a commonplace book, and a portfolio annex. It is loosely structured, and perpetually in progress.
 
-The garden is organized around the metaphor of growth — ideas arrive as seeds, develop into seedlings, and occasionally bloom into something finished. Nothing here is meant to be final.
+The garden is organized around the metaphor of growth: ideas arrive as seeds, develop into seedlings, and occasionally bloom into something finished. Nothing here necessarily has to be final.
 
 ---
 
@@ -35,7 +33,7 @@ garden/
 ## Pages
 
 ### `index.html` — The garden
-A scatter-card board of current thoughts, seedlings, and links. Cards are positioned by hand using CSS custom properties (`--r`, `--ty`, `--z`) and represent ideas at various stages of development — seed, seedling, sprout, bloom.
+A scatter card board of current thoughts, seedlings, and links. Cards are positioned by hand using CSS custom properties (`--r`, `--ty`, `--z`) and represent ideas at various stages of development — seed, seedling, sprout, bloom.
 
 ### `library.html` — The library
 A visual reading log. Each book is a card with a local cover image, genre tag, and year read. Clicking a card opens a slide-in drawer with a personal note and a link to an independent bookstore or the original source. Supports genre filtering and date sorting.
@@ -104,7 +102,7 @@ The garden uses a consistent set of CSS custom properties defined in `:root` on 
 
 ## Philosophy
 
-The garden is deliberately hand-built. There is no CMS, no static site generator, no templating engine. Each page is written directly. This is a feature: every card, every margin, every line of CSS reflects a deliberate choice, not a framework default.
+The garden is deliberately hand built. There is no CMS, no static site generator, no templating engine. Each page is written directly. This is a feature: every card, every margin, every line of CSS reflects an artistic choice, not a framework.
 
 Independent bookstore links are used wherever possible. Buy local when you can.
 
@@ -113,4 +111,4 @@ Independent bookstore links are used wherever possible. Buy local when you can.
 ## License
 
 Content (writing, notes, book selections) © Tahreem Karim, all rights reserved.  
-Code (HTML/CSS/JS structure) is available for reference and learning. Please don't lift the design wholesale — but if something here is useful, use it.
+Code (HTML/CSS/JS structure) is available for reference and learning. Please don't lift the design wholesale but if something here is useful, use it.
