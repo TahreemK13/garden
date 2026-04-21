@@ -1,8 +1,8 @@
 # Garden
 
 > A digital garden — part notebook, part library, part creative studio.  
-> Live at [garden.tahreemkarim.xyz](https://garden.tahreemkarim.xyz)
-> Library at [garden.tahreemkarim.xyz/library](https://garden.tahreemkarim.xyz/library)
+> Live at [garden.tahreemkarim.xyz](https://www.garden.tahreemkarim.xyz)
+> Library at [garden.tahreemkarim.xyz/library](https://www.garden.tahreemkarim.xyz/library)
 
 ---
 
