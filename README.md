@@ -2,6 +2,7 @@
 
 > A digital garden — part notebook, part library, part creative studio.  
 > Live at [garden.tahreemkarim.xyz](https://garden.tahreemkarim.xyz)
+> Library at [garden.tahreemkarim.xyz/library](https://garden.tahreemkarim.xyz/library)
 
 ---
 
