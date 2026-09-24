@@ -28,7 +28,7 @@
       --white: #fdfaf6;
     }
 
-    html { font-size: 16px; scroll-behavior: smooth; }
+  html { font-size: 16px; scroll-behavior: smooth; overflow-x: hidden; max-width: 100%; }
 
     body {
       background: var(--cream);
@@ -46,7 +46,7 @@
       content: '';
       position: fixed;
       inset: 0;
-      background-image: 
+      background-image:
         radial-gradient(ellipse 800px 600px at 10% 20%, rgba(90,140,110,0.07) 0%, transparent 70%),
         radial-gradient(ellipse 600px 800px at 90% 70%, rgba(200,148,58,0.05) 0%, transparent 70%),
         radial-gradient(ellipse 500px 400px at 50% 90%, rgba(90,140,110,0.06) 0%, transparent 70%),
@@ -67,7 +67,7 @@
     }
 
     /* ── NAV ── */
-    nav {
+        nav {
       position: sticky;
       top: 0;
       z-index: 100;
@@ -75,6 +75,7 @@
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--rule);
       padding: 1rem 0;
+      max-width: 100%;
     }
     .nav-inner {
       max-width: 1100px;
@@ -83,6 +84,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 1rem;
     }
     .nav-name {
       font-family: 'Playfair Display', serif;
@@ -91,12 +93,18 @@
       color: var(--green);
       text-decoration: none;
       letter-spacing: 0.01em;
+      flex-shrink: 0;
+      white-space: nowrap;
     }
     .nav-links {
       display: flex;
       gap: 2rem;
       list-style: none;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
     }
+    .nav-links::-webkit-scrollbar { display: none; }
     .nav-links a {
       font-family: 'DM Mono', monospace;
       font-size: 0.7rem;
@@ -105,6 +113,7 @@
       letter-spacing: 0.08em;
       text-transform: uppercase;
       transition: color 0.15s;
+      white-space: nowrap;
     }
     .nav-links a:hover { color: var(--green); }
 
@@ -501,6 +510,8 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
     }
     footer p {
       font-family: 'DM Mono', monospace;
@@ -528,13 +539,34 @@
       .hero-right { display: none; }
       .scatter-field, .pile-field { min-height: auto; position: static; }
       .scatter-item { position: static !important; transform: none !important; margin-bottom: 1rem; }
-      .card, .pin-card, .art-frame { width: 100% !important; }
+      .card, .pin-card, .art-frame,
+      .media-card, .quote-card, .tinted-card, .split-card {
+        width: 100% !important;
+      }
+    }    @media (min-width: 601px) and (max-width: 900px) {
+      .scatter-field, .pile-field {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.25rem;
+        align-items: start;
+      }
+      .scatter-item {
+        margin-bottom: 0;
+      }
     }
+
     @media (max-width: 600px) {
       .hero { padding: 3rem 1.25rem 2rem; }
       .hero-left h1 { font-size: 3rem; }
       .garden { padding: 0 1.25rem 4rem; }
       nav .nav-inner { padding: 0 1.25rem; }
+      .nav-links { gap: 1.25rem; }
+      .nav-links a { font-size: 0.64rem; }
+    }
+
+    @media (max-width: 420px) {
+      .nav-name { font-size: 0.95rem; }
+      .nav-links { gap: 1rem; }
     }
 
     /* ── MEDIA CARD ── */
@@ -780,13 +812,13 @@
 
 <nav>
   <div class="nav-inner">
-    <a class="nav-name" href="#"></a>
+    <a class="nav-name" href="#">Garden</a>
     <ul class="nav-links">
       <li><a href="https://www.tahreemkarim.xyz">Home</a></li>
       <li><a href="https://garden.tahreemkarim.xyz/library">Library</a></li>
-      <li><a href="https://www.tahreemkarim.xyz/science">Science</a></li>
       <li><a href="https://portfolio.tahreemkarim.xyz">Portfolio</a></li>
       <li><a href="https://www.tahreemkarim.xyz/now">Now</a></li>
+      <li><a href="https://www.tahreemkarim.xyz/science">Science</a></li>
       <li><a href="https://www.tahreemkarim.xyz/free-resources">Resources</a></li>
     </ul>
   </div>
@@ -796,7 +828,7 @@
   <div class="hero-left">
     <h1>A digital<br><em>garden</em><span class="small">— growing slowly.</span></h1>
     <p class="hero-tagline">Thoughts, writing, art, and half finished ideas. Some things are seeds and others have bloomed, but it's all alive.</p>
-    <p class="hero-meta">Est. 2026 · Tahreem Karim </p> 
+    <p class="hero-meta">Est. 2026 · Tahreem Karim </p>
     <p class="hero-meta">A Computational Biologist With a Flair for the Creative</p>
   </div>
   <div class="hero-right">
@@ -831,20 +863,20 @@
       </defs>
       <!-- background wash -->
       <ellipse cx="190" cy="210" rx="160" ry="180" fill="rgba(138,184,154,0.08)" filter="url(#blur1)"/>
-      
+
       <!-- Main stem -->
       <path d="M190 400 C188 350 185 300 190 240 C193 200 188 160 192 100" stroke="#5a8c6e" stroke-width="2" fill="none" stroke-linecap="round"/>
-      
+
       <!-- Large left leaf -->
       <path d="M190 280 C160 260 120 240 100 200 C130 210 165 240 190 260" fill="rgba(90,140,110,0.35)" stroke="rgba(61,107,79,0.4)" stroke-width="0.8"/>
       <path d="M190 280 C165 268 135 254 100 200" stroke="rgba(61,107,79,0.25)" stroke-width="0.5" fill="none"/>
-      
+
       <!-- Large right leaf -->
       <path d="M190 240 C220 220 265 205 280 165 C250 178 215 210 190 235" fill="rgba(90,140,110,0.3)" stroke="rgba(61,107,79,0.35)" stroke-width="0.8"/>
-      
+
       <!-- Small left leaf -->
       <path d="M189 190 C168 175 145 162 138 135 C158 148 178 168 190 185" fill="rgba(138,184,154,0.4)" stroke="rgba(61,107,79,0.3)" stroke-width="0.7"/>
-      
+
       <!-- Small right leaf -->
       <path d="M191 160 C210 145 230 128 235 105 C215 118 200 140 191 158" fill="rgba(138,184,154,0.35)" stroke="rgba(61,107,79,0.3)" stroke-width="0.7"/>
 
@@ -854,7 +886,7 @@
       <circle cx="188" cy="82" r="7" fill="rgba(200,148,58,0.3)"/>
       <circle cx="158" cy="72" r="5" fill="rgba(184,92,56,0.25)"/>
       <circle cx="164" cy="85" r="4" fill="rgba(255,180,90,0.20)"/>
-      
+
       <!-- Petals -->
       <ellipse cx="192" cy="70" rx="5" ry="9" fill="rgba(200,148,58,0.35)" transform="rotate(-10 192 88)"/>
       <ellipse cx="192" cy="70" rx="5" ry="9" fill="rgba(184,92,56,0.25)" transform="rotate(30 192 88)"/>
@@ -862,7 +894,7 @@
       <ellipse cx="192" cy="70" rx="5" ry="9" fill="rgba(184,92,56,0.25)" transform="rotate(110 192 88)"/>
       <ellipse cx="192" cy="70" rx="5" ry="9" fill="rgba(200,148,58,0.3)" transform="rotate(150 192 88)"/>
       <ellipse cx="192" cy="70" rx="5" ry="9" fill="rgba(184,92,56,0.2)" transform="rotate(190 192 88)"/>
-      
+
 
       <!-- Petal dissipation pixels -->
       <g id="petal-pixels" transform="translate(0 10)">
@@ -878,7 +910,7 @@
         <use href="#pixelCluster1" transform="translate(105 58) rotate(9) scale(0.75)" opacity="0.32"/>
         <use href="#pixelCluster1" transform="translate(93 55) rotate(-11) scale(0.68)" opacity="0.24"/>
       </g>
-      
+
       <!-- Second smaller bloom -->
       <circle cx="148" cy="148" r="10" fill="rgba(138,184,154,0.3)" filter="url(#blur2)"/>
       <ellipse cx="148" cy="138" rx="4" ry="7" fill="rgba(90,140,110,0.4)" transform="rotate(20 148 148)"/>
@@ -928,8 +960,8 @@
         <div class="card" style="--w:300px;">
           <div class="growth"><span class="growth-dot sprout"></span> Sprout</div>
           <h3 class="card-title">🌿 The garden</h3>
-          <p class="card-body">I am in love with my garden. It is more or less exactly as I imagined it. It actually motivates me 
-            to become someone that can interest people in visiting my internet ecosystem. Ideas: edit the flower footer to get it just right - better 
+          <p class="card-body">I am in love with my garden. It is more or less exactly as I imagined it. It actually motivates me
+            to become someone that can interest people in visiting my internet ecosystem. Ideas: edit the flower footer to get it just right - better
             positioning and more transparent. Would be cool to have them sway in the wind. Also want a watercolor image of Raja sleeping in the grass with animated Z's.
             Also, fix the seed-bloom system. Would also be nice if I could edit the cards without accessing the repo.</p>
           <div class="card-footer"><span class="card-date">March 2026</span><span class="card-tag gold">design</span></div>
@@ -945,7 +977,7 @@
         </a>
       </div>
 
-      
+
 
       <!-- ROW 2 of pile -->
       <!-- DROP THIS INTO index.html AS THE FIRST scatter-item -->
@@ -979,7 +1011,7 @@
        </a>
      </div>
 
-      
+
       <div class="scatter-item" style="--r:1.5deg; --z:4; left:56%; top:245px;">
         <div class="art-frame" style="--w:215px;">
           <div class="art-placeholder" style="height:190px;">[ your art ]</div>
@@ -1010,7 +1042,7 @@
         <div class="pin-card" style="--w:248px;">
           <div class="pin-dot"></div>
           <p class="pin-title">An idiomatic machine learning project for my portfolio 🌱</p>
-          <p class="pin-body">Comic book themed. Relevant source: Image segmentation, classification 
+          <p class="pin-body">Comic book themed. Relevant source: Image segmentation, classification
             and recognition methods for comics: A decade systematic literature review</p>
           <a class="pin-link" href="posts/comics-multimodal.html">read →</a>
         </div>
@@ -1095,7 +1127,7 @@
           <p class="pin-title">🌱 Learn HTML and CSS</p>
           <p class="pin-body">
             Update (still mar)
-            <a href="https://www.coursera.org/specializations/html-css-javascript-for-web-developers" target="_blank">Johns Hopkins University HTML, CSS, 
+            <a href="https://www.coursera.org/specializations/html-css-javascript-for-web-developers" target="_blank">Johns Hopkins University HTML, CSS,
                 and Javascript for Web Developers Specialization</a>
             Probably will have to learn it myself. Unfortunately I am not sure it is relevant to my current curriculum or goals. March 2026</p>
         </div>
