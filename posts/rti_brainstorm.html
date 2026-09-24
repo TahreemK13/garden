@@ -10,21 +10,17 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --cream: #f4ede0;
-      --cream-dark: #ecddd0;
-      --cream-deeper: #e0cdb8;
       --ink: #2c2416;
       --ink-mid: #5a4a38;
       --ink-light: #8a7a6a;
       --ink-faint: #b8a898;
       --green: #3d6b4f;
-      --green-mid: #5a8c6e;
       --green-light: #8ab89a;
       --green-faint: #c8ddd0;
       --green-wash: #e8f0eb;
       --rust: #b85c38;
       --gold: #c8943a;
       --rule: #d8cabb;
-      --white: #fdfaf6;
     }
     html {
       font-size: 16px;
@@ -113,17 +109,6 @@
       white-space: nowrap;
     }
     .nav-links a:hover { color: var(--green); }
-    .growth {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.6rem;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--ink-faint);
-      margin-bottom: 0.75rem;
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-    }
     .growth-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green-faint); }
     .growth-dot.sprout { background: var(--green-light); }
     .card-tag {
@@ -167,26 +152,11 @@
     .page {
       position: relative;
       z-index: 1;
-      max-width: 660px;
+      max-width: clamp(680px, 60vw, 900px);
       margin: 0 auto;
       padding: 4.5rem 2.5rem 8rem;
       animation: fadeUp 0.6s ease both;
     }
-    .breadcrumb {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.62rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--ink-faint);
-      margin-bottom: 3rem;
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      flex-wrap: wrap;
-    }
-    .breadcrumb a { color: var(--green); text-decoration: none; }
-    .breadcrumb a:hover { text-decoration: underline; }
-    .breadcrumb-sep { color: var(--rule); }
     .post-header { margin-bottom: 2.5rem; }
     .stage-badge {
       display: inline-flex;
@@ -250,35 +220,11 @@
     .prose strong { font-weight: 400; color: var(--ink); }
     .prose em { font-style: italic; }
     .prose a { overflow-wrap: break-word; word-break: break-word; }
-    .log {
-      margin-top: 3rem;
-      border-top: 1px solid var(--rule);
-      padding-top: 2rem;
-    }
-    .log-entry {
-      display: flex;
-      gap: 1.5rem;
-      margin-bottom: 1.75rem;
-      align-items: baseline;
-    }
-    .log-date {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.58rem;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-      color: var(--ink-faint);
-      flex-shrink: 0;
-      padding-top: 0.2rem;
-      min-width: 80px;
-    }
-    .log-body { font-size: 0.88rem; color: var(--ink-mid); line-height: 1.8; }
-    .log-body strong { font-weight: 400; color: var(--ink); }
 
     @media (max-width: 700px) {
       .page { padding: 3rem 1.25rem 5rem; }
       .post-header h1 { font-size: 2rem; }
       nav .nav-inner { padding: 0 1.25rem; }
-      .log-entry { flex-direction: column; gap: 0.4rem; }
       .nav-links { gap: 1.25rem; }
       .nav-links a { font-size: 0.64rem; }
     }
@@ -295,10 +241,11 @@
   <div class="nav-inner">
     <a class="nav-name" href="../index.html">Tahreem's Garden</a>
     <ul class="nav-links">
-      <li><a href="https://www.tahreemkarim.xyz/science">Science</a></li>
+      <li><a href="https://www.tahreemkarim.xyz/">Home</a></li>
       <li><a href="https://portfolio.tahreemkarim.xyz">Portfolio</a></li>
       <li><a href="https://www.tahreemkarim.xyz/now">Now</a></li>
       <li><a href="https://www.tahreemkarim.xyz/free-resources">Resources</a></li>
+      <li><a href="https://www.tahreemkarim.xyz/science">Science</a></li>
     </ul>
   </div>
 </nav>
@@ -348,7 +295,7 @@
     That is the thing, they are providing access to data that is hard to reach but no one really knows how to use it imo. People that could use it or are on the ground level have no way to tap into these DBs without training. Therefore they probably there for people like me, to do something with. Maybe my informational non-profit is an education prioritized mission. Meaning I help others take this information and build, or get commissioned to build something with them. I would likely be the one showing them the existence of such resources in the first place.
   </p>
   <p class="prose">
-    Breakfast (coffee sandwich and chips) plus showing <a href="https://share.google/6e7rqj11lEneTmDk1">Creighton's</a> in San Francisco was my consultation fee.
+    Breakfast (coffee sandwich and chips) plus showing <a href="https://share.google/6e7rqj11lEneTmDk1">Creighton's</a> in San Francisco was the consultation fee I paid.
   </p>
 </main>
 <div class="footer-wrap">
